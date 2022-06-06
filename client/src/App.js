@@ -1,8 +1,10 @@
-import logo from "./logo.svg";
+import Predictions from './components/Predictions';
+import Leaderboard from './components/Leaderboard';
 import "./App.css";
-import Ok from "./Ok";
+import Home from "./components/Home";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
+import { Switch, Route } from "react-router-dom";
 
 //create mui dark mode
 const darkTheme = createTheme({
@@ -16,9 +18,14 @@ function App() {
         <div className="App">
             <ThemeProvider theme={darkTheme}>
                 <Navbar />
-                <Ok />
-                <Ok />
-                <Ok />
+                
+                <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/predictions" component={Predictions} />
+                    <Route path="/leaderboard" component={Leaderboard} />
+                    
+                </Switch>
+
             </ThemeProvider>
         </div>
     );

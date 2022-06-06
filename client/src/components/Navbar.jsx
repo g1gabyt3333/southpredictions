@@ -7,13 +7,11 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import { Link } from "react-router-dom";
 
-const pages = ["Leaderbord", "Predictions"];
+const pages = ["Predictions", "Leaderboard"];
 
 export default class navbar extends Component {
     constructor(props) {
@@ -43,16 +41,17 @@ export default class navbar extends Component {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography
+                            as={Link}
                             variant="h6"
                             noWrap
                             component="a"
-                            href="/"
+                            to="/"
                             sx={{
                                 mr: 2,
                                 display: { xs: "none", md: "flex" },
                                 fontFamily: "monospace",
                                 fontWeight: 700,
-                                letterSpacing: ".3rem",
+                                letterSpacing: ".15rem",
                                 color: "inherit",
                                 textDecoration: "none",
                             }}
@@ -98,8 +97,13 @@ export default class navbar extends Component {
                                     <MenuItem
                                         key={page}
                                         onClick={this.handleCloseNavMenu}
+                                        component={Link}
+                                        to={page}
                                     >
-                                        <Typography textAlign="center">
+                                        <Typography
+                                            textAlign="center"
+                                            
+                                        >
                                             {page}
                                         </Typography>
                                     </MenuItem>
@@ -117,8 +121,9 @@ export default class navbar extends Component {
                                 flexGrow: 1,
                                 fontFamily: "monospace",
                                 fontWeight: 700,
-                                letterSpacing: ".3rem",
+                                letterSpacing: ".1rem",
                                 color: "inherit",
+                                fontSize: {xs: "1.25rem", sm: "1.5rem"},
                                 textDecoration: "none",
                             }}
                         >
@@ -134,6 +139,8 @@ export default class navbar extends Component {
                                 <Button
                                     key={page}
                                     onClick={this.handleCloseNavMenu}
+                                    to={page}
+                                    component={Link}
                                     sx={{
                                         my: 2,
                                         color: "white",
