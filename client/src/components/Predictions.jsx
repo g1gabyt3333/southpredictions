@@ -6,4 +6,4 @@ export default class Predictions extends Component {
       <div>Predictions</div>
     )
   }
-}
+}   

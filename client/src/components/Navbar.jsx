@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
+
 const pages = ["Predictions", "Leaderboard"];
 
 export default class navbar extends Component {
@@ -98,7 +99,7 @@ export default class navbar extends Component {
                                         key={page}
                                         onClick={this.handleCloseNavMenu}
                                         component={Link}
-                                        to={page}
+                                        to={page.toLowerCase()}
                                     >
                                         <Typography
                                             textAlign="center"
@@ -139,7 +140,7 @@ export default class navbar extends Component {
                                 <Button
                                     key={page}
                                     onClick={this.handleCloseNavMenu}
-                                    to={page}
+                                    to={page.toLowerCase()}
                                     component={Link}
                                     sx={{
                                         my: 2,
@@ -157,13 +158,14 @@ export default class navbar extends Component {
                             }}
                         >
                             <Button
+                                onClick={this.props.toggle}
                                 sx={{
                                     my: 2,
                                     color: "white",
                                     display: "block",
                                 }}
                             >
-                                Login
+                                {this.props.isLoggedIn ? "Logged in" : "Login"}
                             </Button>
                         </Box>
                     </Toolbar>
