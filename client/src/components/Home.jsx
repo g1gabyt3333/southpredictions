@@ -16,18 +16,29 @@ export default class Home extends Component {
                         Welcome to South Predictions!
                     </Typography>
                 </Grid>
-                <Grid
-                    item
-                    justifyContent="center"
-                    xs={4}
-                    md={4}
-                    
-                >
-                    <Grid item xs={2} md={1} mt="10vh">
-                        <Button variant="contained">Login/Register</Button>
+                <Grid item justifyContent="center" xs={4} md={4}>
+                    <Grid item xs={2} md={12} mt="10vh">
+                        <HomeMsg
+                            signIn={this.props.signIn}
+                            user={this.props.user}
+                        />
                     </Grid>
                 </Grid>
             </Grid>
         );
     }
 }
+
+const HomeMsg = (props) => {
+    if (props.user) {
+        return <Typography variant="h6">{props.user.displayName}!</Typography>;
+    }
+    return (
+        <Button
+            onClick={props.signIn}
+            variant="contained"
+        >
+            Login
+        </Button>
+    );
+};

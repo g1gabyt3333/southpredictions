@@ -11,8 +11,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
-
-const pages = ["Predictions", "Leaderboard"];
+const pages = ["Predictions", "Leaderboard", "Forum"];
 
 export default class navbar extends Component {
     constructor(props) {
@@ -101,10 +100,7 @@ export default class navbar extends Component {
                                         component={Link}
                                         to={page.toLowerCase()}
                                     >
-                                        <Typography
-                                            textAlign="center"
-                                            
-                                        >
+                                        <Typography textAlign="center">
                                             {page}
                                         </Typography>
                                     </MenuItem>
@@ -124,7 +120,7 @@ export default class navbar extends Component {
                                 fontWeight: 700,
                                 letterSpacing: ".1rem",
                                 color: "inherit",
-                                fontSize: {xs: "1.25rem", sm: "1.5rem"},
+                                fontSize: { xs: "1.25rem", sm: "1.5rem" },
                                 textDecoration: "none",
                             }}
                         >
@@ -157,16 +153,11 @@ export default class navbar extends Component {
                                 flexGrow: 0,
                             }}
                         >
-                            <Button
-                                onClick={this.props.toggle}
-                                sx={{
-                                    my: 2,
-                                    color: "white",
-                                    display: "block",
-                                }}
-                            >
-                                {this.props.isLoggedIn ? "Logged in" : "Login"}
-                            </Button>
+                            <LoginButton
+                                signIn={this.props.signIn}
+                                signOut={this.props.signOut}
+                                user={this.props.user}
+                            />
                         </Box>
                     </Toolbar>
                 </Container>
@@ -174,3 +165,33 @@ export default class navbar extends Component {
         );
     }
 }
+
+const LoginButton = (props) => {
+    if (props.user) {
+        return (
+            <Button
+                onClick={props.signOut}
+                sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                }}
+            >
+                {props.user.displayName}
+            </Button>
+        );
+    }
+
+    return (
+        <Button
+            onClick={props.signIn}
+            sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+            }}
+        >
+            Login
+        </Button>
+    );
+};

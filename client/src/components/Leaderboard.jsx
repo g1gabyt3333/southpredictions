@@ -10,6 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Container, Box } from "@mui/system";
+import { Alert } from "@mui/material";
 
 export default class Leaderboard extends Component {
     constructor(props) {
@@ -31,6 +32,9 @@ export default class Leaderboard extends Component {
                 } else {
                     this.setState({ loading: false, data: data.lb });
                 }
+            })
+            .catch(e => {
+                this.setState({ noLoad: true, loading: false });
             });
     }
 
@@ -41,6 +45,12 @@ export default class Leaderboard extends Component {
                     <CircularProgress />
                 </Box>
             );
+        }
+        else if(this.state.noLoad) {
+            return (
+                <Alert severity="error">Could not fetch data. Try again later</Alert>
+            )
+
         }
         return (
             <Container>
