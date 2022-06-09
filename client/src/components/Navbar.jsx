@@ -101,7 +101,7 @@ export default class navbar extends Component {
                                         key={page}
                                         onClick={this.handleCloseNavMenu}
                                         component={Link}
-                                        to={page.toLowerCase()}
+                                        to={`/${page.toLowerCase()}`}
                                     >
                                         <Typography textAlign="center">
                                             {page}
@@ -139,7 +139,7 @@ export default class navbar extends Component {
                                 <Button
                                     key={page}
                                     onClick={this.handleCloseNavMenu}
-                                    to={page.toLowerCase()}
+                                    to={`/${page.toLowerCase()}`}
                                     component={Link}
                                     sx={{
                                         my: 2,
@@ -210,7 +210,7 @@ const LoginButton = (props) => {
                         onClick={handleClose}
                         component={Link}
                         id="profile"
-                        to={`profile/${user.uid}`}
+                        to={`/profile/${user.uid}`}
                     >
                         Profile
                     </MenuItem>

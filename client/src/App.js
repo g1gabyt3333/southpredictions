@@ -9,6 +9,7 @@ import React, { Component } from "react";
 import { Grid, Button } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Profile from "./components/Profile";
+import ForumPost from "./components/ForumPost";
 
 import * as app from "./firebase";
 import Forum from "./components/Forum";
@@ -36,9 +37,10 @@ export default function App() {
                 <Navbar user={user} />
                 <Switch>
                     <Route exact path="/" render={() => <Home user={user} />} />
-                    <Route path="/predictions" component={Predictions} />
-                    <Route path="/leaderboard" component={Leaderboard} />
-                    <Route path="/forum" component={Forum} />
+                    <Route exact path="/predictions" component={Predictions} />
+                    <Route exact path="/leaderboard" component={Leaderboard} />
+                    <Route exact path="/forum/:id" render={(props) => <ForumPost postId={props.match.params.id}/>} />
+                    <Route exact path="/forum" component={Forum} />
                     <Route
                         path={"/profile/:id"}
                         render={(props) => (

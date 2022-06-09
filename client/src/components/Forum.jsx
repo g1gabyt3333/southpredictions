@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import * as app from "../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -9,7 +10,18 @@ class Forum extends Component {
     render() {
         return (
             <>
-                <Typography variant="h6">{this.props.message}</Typography>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        display: "block",
+                        textDecoration: "none",
+                        color: "white",
+                    }}
+                    component={Link}
+                    to={`/forum/${this.props.msgId}`}
+                >
+                    {this.props.message}
+                </Typography>
             </>
         );
     }
@@ -20,20 +32,23 @@ export default function ForumPost() {
     const query = forumRef.orderBy("message").limit(10);
 
     const [values, loading, error, snapshot] = useCollectionData(query, {
-        idField: 'id',
+        idField: "id",
     });
-    console.log(values)
 
-    // console.log(values);
+    console.log(values);
     if (error) {
-        return <div> You must be signed in to do that!</div>;
+        return <div> You must be signed in for access!</div>;
     }
 
     return (
         <div>
             {values &&
                 values.map((message) => (
-                    <Forum key={message.id} message={message.message} />
+                    <Forum
+                        key={message.id}
+                        msgId={message.id}
+                        message={message.message}
+                    />
                 ))}
         </div>
     );
