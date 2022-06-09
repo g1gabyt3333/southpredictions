@@ -7,31 +7,11 @@ import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
 import React, { Component } from "react";
 import { Grid, Button } from "@mui/material";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import Profile from "./components/Profile";
 
-firebase.initializeApp({
-    apiKey: "AIzaSyDj52gqCohCpZ-g_sXh2Z8O86YnI0oIzew",
-
-    authDomain: "southpredictions.firebaseapp.com",
-
-    projectId: "southpredictions",
-
-    storageBucket: "southpredictions.appspot.com",
-
-    messagingSenderId: "609679122673",
-
-    appId: "1:609679122673:web:f90fc762c71418bd570950",
-
-    measurementId: "G-065M7ZB9K3",
-});
-
-const auth = firebase.auth();
-const db = firebase.firestore();
+import * as app from "./firebase";
+import Forum from "./components/Forum";
 
 //create mui dark mode
 const darkTheme = createTheme({
@@ -41,34 +21,30 @@ const darkTheme = createTheme({
 });
 
 export default function App() {
-    const [user, loading, error] = useAuthState(auth);
+    const [user, loading, error] = useAuthState(app.auth);
 
-    if(user && user.email.split("@")[1] !== "wwprsd.org"){
-
+    if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
-            auth.signOut();
+            app.auth.signOut();
         }, 2500);
-        return <div>WW-P students only! You will be signed out shortly!</div>
-    };
+        return <div>WW-P students only! You will be signed out shortly!</div>;
+    }
 
     return (
         <div className="App">
             <ThemeProvider theme={darkTheme}>
-                <Navbar user={user} signIn={google} signOut={signOut} />
+                <Navbar user={user} />
                 <Switch>
-                    <Route
-                        exact
-                        path="/"
-                        render={() => (
-                            <Home
-                                user={user}
-                                signIn={google}
-                                signOut={signOut}
-                            />
-                        )}
-                    />
+                    <Route exact path="/" render={() => <Home user={user} />} />
                     <Route path="/predictions" component={Predictions} />
                     <Route path="/leaderboard" component={Leaderboard} />
+                    <Route path="/forum" component={Forum} />
+                    <Route
+                        path={"/profile/:id"}
+                        render={(props) => (
+                            <Profile userId={props.match.params.id} />
+                        )}
+                    />
                 </Switch>
             </ThemeProvider>
         </div>
@@ -78,11 +54,3 @@ export default function App() {
 /**
  * Sign in with Google.
  */
-const google = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-};
-
-const signOut = () => {
-    auth.signOut();
-};

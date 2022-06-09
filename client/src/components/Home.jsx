@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Grid, Button, Typography } from "@mui/material";
+import * as app from "../firebase";
 
 export default class Home extends Component {
     render() {
@@ -19,7 +20,7 @@ export default class Home extends Component {
                 <Grid item justifyContent="center" xs={4} md={4}>
                     <Grid item xs={2} md={12} mt="10vh">
                         <HomeMsg
-                            signIn={this.props.signIn}
+                            signIn={app.signIn}
                             user={this.props.user}
                         />
                     </Grid>
@@ -35,7 +36,7 @@ const HomeMsg = (props) => {
     }
     return (
         <Button
-            onClick={props.signIn}
+            onClick={app.signIn}
             variant="contained"
         >
             Login

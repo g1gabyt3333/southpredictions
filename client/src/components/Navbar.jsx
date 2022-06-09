@@ -10,6 +10,9 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import * as app from "../firebase";
+
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const pages = ["Predictions", "Leaderboard", "Forum"];
 
@@ -154,8 +157,8 @@ export default class navbar extends Component {
                             }}
                         >
                             <LoginButton
-                                signIn={this.props.signIn}
-                                signOut={this.props.signOut}
+                                signIn={app.signIn}
+                                signOut={app.signOut}
                                 user={this.props.user}
                             />
                         </Box>
@@ -167,18 +170,55 @@ export default class navbar extends Component {
 }
 
 const LoginButton = (props) => {
+    const [loginEl, setLoginEl] = React.useState(null);
+    const open = Boolean(loginEl);
+
+    const [user, loading, error] = useAuthState(app.auth);
+    const handleClick = (event) => {
+        setLoginEl(event.currentTarget);
+    };
+    const handleClose = (event) => {
+        if (event.target.id === "logout") {
+            app.signOut();
+        }
+        setLoginEl(null);
+    };
+
     if (props.user) {
         return (
-            <Button
-                onClick={props.signOut}
-                sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                }}
-            >
-                {props.user.displayName}
-            </Button>
+            <>
+                <Button
+                    onClick={handleClick}
+                    sx={{
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                    }}
+                >
+                    {props.user.displayName}
+                </Button>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={loginEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                    }}
+                >
+                    <MenuItem
+                        onClick={handleClose}
+                        component={Link}
+                        id="profile"
+                        to={`profile/${user.uid}`}
+                    >
+                        Profile
+                    </MenuItem>
+                    <MenuItem onClick={handleClose} id="logout">
+                        Logout
+                    </MenuItem>
+                </Menu>
+            </>
         );
     }
 
