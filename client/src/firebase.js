@@ -21,6 +21,11 @@ firebase.initializeApp({
     measurementId: "G-065M7ZB9K3",
 });
 
+
+
+/**
+ * @returns Authentication service
+ */
 const auth = firebase.auth();
 const db = firebase.firestore();
 
