@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as app from "../firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
 
 class ForumPostModule extends Component {
     render() {
@@ -9,14 +9,19 @@ class ForumPostModule extends Component {
 }
 
 const FormTitle = (props) => {
-    const forumRef = app.db.collection(`/forum`);
-
-    const query = forumRef.where("__name__", "==", props.postId);
-    const [values] = useCollectionData(query, { //reminder to add loading later
+    
+    const forumRef = app.db.collection(`/forum`).doc(props.postId)
+   
+    
+    
+    
+    // const query = forumRef.where("__name__", "==", props.postId);
+    const [values] = useDocumentData(forumRef, { //reminder to add loading later
         idField: "id",
     });
+    return <h1> {values && values.message}</h1>;
 
-    return <h1> {values && values[0].message}</h1>;
+    
 };
 export default function ForumPost(props) {
     const forumRef = app.db.collection(`/forum`).doc(props.postId).collection("replies");

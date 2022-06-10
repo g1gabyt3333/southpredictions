@@ -73,7 +73,7 @@ const ForumInput = () => {
 
 export default function ForumPost() {
     const forumRef = app.db.collection("forum");
-    const query = forumRef.orderBy("timePosted", "desc").limit(10);
+    const query = forumRef.orderBy("timePosted", "desc").limit(100);
 
     const [values, loading, error] = useCollectionData(query, {
         idField: "id",
