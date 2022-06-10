@@ -29,10 +29,16 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+const makeTimestamp = (date) => {
+    return firebase.firestore.Timestamp.fromDate(date);
+}
+
 const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
 };
+
+
 
 const signOut = () => {
     auth.signOut();
@@ -40,5 +46,5 @@ const signOut = () => {
 
 
 export {
-    signIn, signOut, auth, db
+    signIn, signOut, auth, db, makeTimestamp
 }

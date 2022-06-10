@@ -11,9 +11,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import * as app from "../firebase";
-
 import { useAuthState } from "react-firebase-hooks/auth";
-
 const pages = ["Predictions", "Leaderboard", "Forum"];
 
 export default class navbar extends Component {
@@ -33,7 +31,7 @@ export default class navbar extends Component {
         });
     }
 
-    handleCloseNavMenu(evt) {
+    handleCloseNavMenu() {
         this.setState({
             anchorElNav: null,
         });
@@ -173,7 +171,7 @@ const LoginButton = (props) => {
     const [loginEl, setLoginEl] = React.useState(null);
     const open = Boolean(loginEl);
 
-    const [user, loading, error] = useAuthState(app.auth);
+    const [user] = useAuthState(app.auth);
     const handleClick = (event) => {
         setLoginEl(event.currentTarget);
     };

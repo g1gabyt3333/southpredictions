@@ -5,8 +5,7 @@ import Home from "./components/Home";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
-import React, { Component } from "react";
-import { Grid, Button } from "@mui/material";
+import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Profile from "./components/Profile";
 import ForumPost from "./components/ForumPost";
@@ -22,7 +21,7 @@ const darkTheme = createTheme({
 });
 
 export default function App() {
-    const [user, loading, error] = useAuthState(app.auth);
+    const [user] = useAuthState(app.auth);
 
     if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
