@@ -4,6 +4,7 @@ import {
     useCollectionData,
     useDocumentData,
 } from "react-firebase-hooks/firestore";
+import {Box, Button, TextField, Typography} from "@mui/material";
 
 class ForumPostModule extends Component {
     render() {
@@ -35,10 +36,21 @@ export default function ForumPost(props) {
     return (
         <div>
             <FormTitle postId={props.postId} />
+            
             {values &&
                 values.map((reply) => (
                     <ForumPostModule key={reply.id} reply={reply.message} />
                 ))}
+                <Typography
+                variant="h3"
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: "10px",
+                }}
+            >
+                Reply to this post
+            </Typography>
             <ForumReply postId={props.postId} />
         </div>
     );
@@ -65,15 +77,27 @@ const ForumReply = (props) => {
         setMessage("");
     };
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={message}
-                onChange={handleChange}
-                placeholder="Type a message..."
-                required
-            />
-            <button type="submit">Send</button>
-        </form>
+        <Box
+            component="form"
+            sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+                display: "flex",
+                justifyContent: "center",
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit}
+        >
+            <div>
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="New Reply"
+                    value={message}
+                    onChange={handleChange}
+                />
+            </div>
+            <Button variant="contained" type="submit">Submit</Button>
+        </Box>
     );
 };

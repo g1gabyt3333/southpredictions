@@ -2,14 +2,27 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import * as app from "../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Typography } from "@mui/material";
-import { CircularProgress } from "@mui/material";
+
+import {
+    ListItemButton,
+    ListItemText,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Select,
+    TextField,
+    Box,
+    Button,
+    Container,
+    Typography,
+    CircularProgress,
+} from "@mui/material";
 
 class Forum extends Component {
     render() {
         return (
             <>
-                <Typography
+                {/* <Typography
                     variant="h6"
                     sx={{
                         display: "flex",
@@ -18,10 +31,17 @@ class Forum extends Component {
                         color: "white",
                     }}
                     component={Link}
-                    to={`/forum/${this.props.msgId}`}
+                    
                 >
                     {this.props.message}
-                </Typography>
+                </Typography> */}
+                <ListItemButton
+                    component={Link}
+                    to={`/forum/${this.props.msgId}`}
+                    href="#simple-list"
+                >
+                    <ListItemText primary={this.props.message} />
+                </ListItemButton>
             </>
         );
     }
@@ -38,19 +58,14 @@ const ForumInput = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setMessage("");
+        if (message === "") {
+            return;
+        }
 
         const newDoc = await forumRef.add({
             message: message,
             timePosted: app.makeTimestamp(new Date()),
-            
         });
-        
-        
-       
-
-    
-        
 
         console.log("Message added to forum ", newDoc.id);
 
@@ -58,22 +73,60 @@ const ForumInput = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={message}
+        <Box
+            component="form"
+            sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+                display: "flex",
+                justifyContent: "center",
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleSubmit}
+        >
+            <div>
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="New Post"
+                    value={message}
+                    onChange={handleChange}
+                />
+            </div>
+            <Button variant="contained" type="submit">
+                Submit
+            </Button>
+        </Box>
+    );
+};
+
+const ChangeQueryInput = (props) => {
+    const handleChange = (e) => {
+        props.setQueryLimit(e.target.value);
+    };
+
+    return (
+        <FormControl size="medium" sx={{ marginLeft: "15px" }}>
+            <InputLabel id="demo-simple-select-label">Posts</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={props.queryLimit}
+                label="Post Limit"
                 onChange={handleChange}
-                placeholder="Type a message..."
-                required
-            />
-            <button type="submit">Send</button>
-        </form>
+            >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={50}>Fifty</MenuItem>
+            </Select>
+        </FormControl>
     );
 };
 
 export default function ForumPost() {
     const forumRef = app.db.collection("forum");
-    const query = forumRef.orderBy("timePosted", "desc").limit(100);
+    const [queryLimit, setQueryLimit] = React.useState(10);
+    const query = forumRef.orderBy("timePosted", "desc").limit(queryLimit);
 
     const [values, loading, error] = useCollectionData(query, {
         idField: "id",
@@ -86,13 +139,16 @@ export default function ForumPost() {
         return <CircularProgress />;
     }
     return (
-        <div>
-            <Typography
-                variant="h3"
-                sx={{ display: "flex", justifyContent: "center" }}
-            >
-                Latest Posts
-            </Typography>
+        <Container maxWidth="xl">
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <Typography variant="h3" sx={{ justifyContent: "center" }}>
+                    Latest Posts
+                </Typography>
+                <ChangeQueryInput
+                    queryLimit={queryLimit}
+                    setQueryLimit={setQueryLimit}
+                />
+            </div>
 
             {values &&
                 values.map((message) => (
@@ -102,7 +158,17 @@ export default function ForumPost() {
                         message={message.message}
                     />
                 ))}
+            <Typography
+                variant="h3"
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: "10px",
+                }}
+            >
+                Add a new Post
+            </Typography>
             <ForumInput />
-        </div>
+        </Container>
     );
 }
