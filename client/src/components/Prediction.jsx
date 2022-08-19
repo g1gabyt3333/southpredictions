@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Chip } from "@mui/material";
 
-export default function Prediction(props) {
+export default function Prediction({ data }) {
     const handleClick = (e) => {
         console.log("Hello");
     }
@@ -21,22 +21,18 @@ export default function Prediction(props) {
                     color="text.secondary"
                     gutterBottom
                 >
-                    Word of the Day
+                    {data.dateCreated.toString()}
                 </Typography>
                 <Typography variant="h5" component="div">
-                    real rx
+                    {data.prediction}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    adjective
-                </Typography>
-                <Typography variant="body2">
-                    well meaning and kindly.
-                    <br />
-                    {'"a benevolent smile"'}
-                </Typography>
+                
+                
             </CardContent>
             <CardActions>
-                <Chip label="Hello" onClick={handleClick} sx={{...padding}}/>
+                {data.options.map((option, index) => {
+                    <Chip label={option} />
+                })}
             </CardActions>
         </Card>
     );
