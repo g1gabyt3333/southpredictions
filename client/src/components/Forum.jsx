@@ -17,6 +17,7 @@ import {
     Typography,
     CircularProgress,
 } from "@mui/material";
+import { serverTimestamp } from "firebase/firestore";
 
 class Forum extends Component {
     render() {
@@ -64,7 +65,7 @@ const ForumInput = () => {
 
         const newDoc = await forumRef.add({
             message: message,
-            timePosted: app.makeTimestamp(new Date()),
+            timePosted: serverTimestamp(),
         });
 
         console.log("Message added to forum ", newDoc.id);

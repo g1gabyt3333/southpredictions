@@ -5,6 +5,7 @@ import {
     useDocumentData,
 } from "react-firebase-hooks/firestore";
 import {Box, Button, TextField, Typography} from "@mui/material";
+import { serverTimestamp }  from "firebase/firestore";
 
 class ForumPostModule extends Component {
     render() {
@@ -71,7 +72,7 @@ const ForumReply = (props) => {
             .collection("replies");
         const newDoc = await forumRef.add({
             message: message,
-            timePosted: app.makeTimestamp(new Date()),
+            timePosted: serverTimestamp(),
         });
         console.log("Message added to forum ", newDoc.id);
         setMessage("");

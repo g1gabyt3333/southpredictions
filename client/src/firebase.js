@@ -5,6 +5,7 @@ import "firebase/compat/firestore";
 
 
 
+
 firebase.initializeApp({
     apiKey: "AIzaSyDj52gqCohCpZ-g_sXh2Z8O86YnI0oIzew",
 
@@ -29,9 +30,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const makeTimestamp = (date) => {
-    return firebase.firestore.Timestamp.fromDate(date);
-}
+
 
 const signIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -46,5 +45,5 @@ const signOut = () => {
 
 
 export {
-    signIn, signOut, auth, db, makeTimestamp
+    signIn, signOut, auth, db
 }
