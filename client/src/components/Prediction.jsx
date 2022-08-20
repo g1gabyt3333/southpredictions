@@ -12,7 +12,7 @@ export default function Prediction({ data }) {
         console.log("Hello");
     }
     const padding = {paddingLeft: "5px", paddingRight: "5px"};
-
+    console.log(data.options)
     return (
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
@@ -30,9 +30,9 @@ export default function Prediction({ data }) {
                 
             </CardContent>
             <CardActions>
-                {data.options.map((option, index) => {
+                {data.options.map((option, index) => 
                     <Chip label={option} />
-                })}
+                )}
             </CardActions>
         </Card>
     );
