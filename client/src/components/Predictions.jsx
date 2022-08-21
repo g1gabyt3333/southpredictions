@@ -4,18 +4,27 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Container } from "@mui/material";
 import Prediction from "./Prediction";
 
+
 const predictionsArray = [
     {
         dateCreated: new Date(),
         prediction: "Will school start on September 6th?",
         options: ["Yes", "No"],
         isCompleted: false,
+        results : [
+            {"Yes": 32},
+            {"No": 3}
+        ]
     },
     {
         dateCreated: new Date(),
         prediction: "Will we have split lunches this year?",
         options: ["Yes", "No"],
         isCompleted: true,
+        results : [
+            {"Yes": 10},
+            {"No": 33}
+        ]
     },
 ];
 export default function Predictions() {
