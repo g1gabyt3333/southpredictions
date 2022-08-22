@@ -26,7 +26,7 @@ export default function Prediction({ data }) {
                 </Typography>
                 <Typography variant="h5" component="div">
                     {data.prediction}
-                    {data.isCompleted ? "(Completed)" : "(Pending)"}
+                    {data.isCompleted ? " (Completed)" : " (Pending)"}
                 </Typography>
             </CardContent>
             <CardActions>
@@ -36,6 +36,7 @@ export default function Prediction({ data }) {
                         variant={data.isCompleted ? "outlined" : "filled"}
                         label={option}
                         onClick={data.isCompleted ? null : handleClick}
+                        color={data.answer === option ? "primary" : "default"}  
                         sx={{...padding}}
                     />
                 ))}

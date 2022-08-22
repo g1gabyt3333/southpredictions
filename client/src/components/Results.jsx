@@ -4,17 +4,17 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Box } from "@mui/material";
 
 export default function Results(props) {
     const tot = Object.values(props.results).reduce((a, b) => a + b, 0);
     const keys = Object.keys(props.results);
 
     const styles = {
-        
-    }
-
-
+        height: 10,
+        borderRadius: "5px",
+        marginBottom: "15px",
+    };
 
     return (
         <div>
@@ -28,14 +28,30 @@ export default function Results(props) {
                 </AccordionSummary>
                 <AccordionDetails>
                     {keys.map((key) => (
-                        <div key={key}>
-                            <LinearProgress
-                                variant="determinate"
-                                value={Math.floor(
-                                    (props.results[key] / tot) * 100
-                                )}
-                            />
-                        </div>
+                        <Box
+                            sx={{ display: "flex", alignItems: "center" }}
+                            key={key}
+                        >
+                            <Box sx={{ minWidth: 100, mb: "15px" }}>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {key} - {Math.floor((props.results[key] / tot) * 100)}%
+                                </Typography>
+                            </Box>
+                            <Box sx={{ width: "100%", mr: 1 }}>
+                                <LinearProgress
+                                    variant="determinate"
+                                    value={Math.floor(
+                                        (props.results[key] / tot) * 100
+                                    )}
+                                    sx={{
+                                        ...styles,
+                                    }}
+                                />
+                            </Box>
+                        </Box>
                     ))}
                 </AccordionDetails>
             </Accordion>
