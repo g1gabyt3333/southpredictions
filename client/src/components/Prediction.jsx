@@ -25,7 +25,7 @@ export default function Prediction({ data }) {
                     {data.dateCreated.toString()}
                 </Typography>
                 <Typography variant="h5" component="div">
-                    {data.prediction}{" "}
+                    {data.prediction}
                     {data.isCompleted ? "(Completed)" : "(Pending)"}
                 </Typography>
             </CardContent>
@@ -41,7 +41,7 @@ export default function Prediction({ data }) {
                 ))}
             </CardActions>
             <Divider />
-            <Results />
+            <Results results={data.results} />
         </Card>
     );
 }

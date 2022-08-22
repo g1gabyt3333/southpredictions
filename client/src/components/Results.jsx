@@ -7,9 +7,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LinearProgress } from "@mui/material";
 
 export default function Results(props) {
+    const tot = Object.values(props.results).reduce((a, b) => a + b, 0);
+    const keys = Object.keys(props.results);
+
+    const styles = {
+        
+    }
+
+
+
     return (
         <div>
-            <Accordion> 
+            <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -18,7 +27,16 @@ export default function Results(props) {
                     <Typography>View Results</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <LinearProgress variant="determinate" value={30} />
+                    {keys.map((key) => (
+                        <div key={key}>
+                            <LinearProgress
+                                variant="determinate"
+                                value={Math.floor(
+                                    (props.results[key] / tot) * 100
+                                )}
+                            />
+                        </div>
+                    ))}
                 </AccordionDetails>
             </Accordion>
         </div>

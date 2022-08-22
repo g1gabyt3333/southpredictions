@@ -11,20 +11,20 @@ const predictionsArray = [
         prediction: "Will school start on September 6th?",
         options: ["Yes", "No"],
         isCompleted: false,
-        results : [
-            {"Yes": 32},
-            {"No": 3}
-        ]
+        results: {
+            "Yes": 32,
+            "No": 5,
+        }
     },
     {
         dateCreated: new Date(),
         prediction: "Will we have split lunches this year?",
         options: ["Yes", "No"],
         isCompleted: true,
-        results : [
-            {"Yes": 10},
-            {"No": 33}
-        ]
+        results: {
+            "Yes": 12,
+            "No": 52,
+        }
     },
 ];
 export default function Predictions() {
