@@ -43,11 +43,13 @@ export default function Results(props) {
                             <Box sx={{ width: "100%", mr: 1 }}>
                                 <LinearProgress
                                     variant="determinate"
+                                    color={key === props.answer ? "secondary" : "primary"}
                                     value={Math.floor(
                                         (props.results[key] / tot) * 100
                                     )}
                                     sx={{
                                         ...styles,
+                                        
                                     }}
                                 />
                             </Box>

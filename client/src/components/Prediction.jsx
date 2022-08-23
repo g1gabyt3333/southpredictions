@@ -14,6 +14,7 @@ export default function Prediction({ data }) {
         console.log(e.target.innerText);
     };
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
+    
     return (
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
@@ -22,7 +23,7 @@ export default function Prediction({ data }) {
                     color="text.secondary"
                     gutterBottom
                 >
-                    {data.dateCreated.toString()}
+                    {data.dateCreated !== null ? (new Date((data.dateCreated.seconds * 1000))).toString() : "..."}
                 </Typography>
                 <Typography variant="h5" component="div">
                     {data.prediction}
@@ -42,7 +43,7 @@ export default function Prediction({ data }) {
                 ))}
             </CardActions>
             <Divider />
-            <Results results={data.results} />
+            <Results results={data.results} answer={data.answer} />
         </Card>
     );
 }
