@@ -6,31 +6,7 @@ import Prediction from "./Prediction";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 
-const predictionsArray = [
-    {
-        dateCreated: new Date(),
-        prediction: "Will school start on September 6th?",
-        options: ["Yes", "No", "Maybe"],
-        isCompleted: false,
-        results: {
-            "Yes": 32,
-            "No": 5,
-            "Maybe": 1,
-        }
-    },
-    {
-        dateCreated: new Date(),
-        prediction: "Will we have split lunches this year?",
-        options: ["Yes", "No"],
-        isCompleted: true,
-        results: {
-            "Yes": 12,
-            "No": 52,
-        },
-        answer: "Yes",
-        
-    },
-];
+
 export default function Predictions() {
     const [user, loading, error] = useAuthState(app.auth);
     const query = app.db.collection("/predictions").orderBy("dateCreated", "desc");
@@ -52,8 +28,8 @@ export default function Predictions() {
     return (
         <Container maxWidth="xl" sx={{ marginTop: "6vh", display: "flex", flexDirection: "column", rowGap: "20px" }}>
 
-            {values.map((prediction, index) => (
-                <Prediction key={index} data={prediction} />
+            {values.map((prediction) => (
+                <Prediction key={prediction.id} id={prediction.id} data={prediction} />
             ))}
         </Container>
     );

@@ -1,20 +1,41 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+import * as app from "../firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+import { useAuthState } from "react-firebase-hooks/auth";
 import Typography from "@mui/material/Typography";
-import { Chip } from "@mui/material";
+import { Chip, requirePropFactory } from "@mui/material";
 import Results from "./Results";
-import {Divider} from "@mui/material";
+import { Divider } from "@mui/material";
 
 export default function Prediction({ data }) {
+    
+    const padding = { paddingLeft: "5px", paddingRight: "5px" };
+
+    const [user, loading, error] = useAuthState(app.auth);
+    // const query = app.db.doc(`/predictions/${data.id}/votes/${user.uid}`);
+    // const [value, load, e] = useCollectionData(query);
+    
+
+    const addVote = (e) => {
+        const ref = app.db
+            .collection("/predictions")
+            .doc(data.id)
+            .collection("/votes")
+            .doc(user.uid);
+
+        ref.set({
+            vote: e.target.innerText,
+        });
+    };
+
     const handleClick = (e) => {
         console.log(e.target.innerText);
+        addVote(e)
     };
-    const padding = { paddingLeft: "5px", paddingRight: "5px" };
-    
+
     return (
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
@@ -23,7 +44,9 @@ export default function Prediction({ data }) {
                     color="text.secondary"
                     gutterBottom
                 >
-                    {data.dateCreated !== null ? (new Date((data.dateCreated.seconds * 1000))).toString() : "..."}
+                    {data.dateCreated !== null
+                        ? new Date(data.dateCreated.seconds * 1000).toString()
+                        : "..."}
                 </Typography>
                 <Typography variant="h5" component="div">
                     {data.prediction}
@@ -37,13 +60,16 @@ export default function Prediction({ data }) {
                         variant={data.isCompleted ? "outlined" : "filled"}
                         label={option}
                         onClick={data.isCompleted ? null : handleClick}
-                        color={data.answer === option ? "primary" : "default"}  
-                        sx={{...padding}}
+                        color={data.answer === option ? "primary" : "default"}
+                        sx={{ ...padding }}
                     />
                 ))}
             </CardActions>
             <Divider />
-            <Results results={data.results} answer={data.answer} />
+            <Results
+                results={data.results}
+                answer={data.answer}
+            />
         </Card>
     );
 }

@@ -37,14 +37,14 @@ export default function Results(props) {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {key} - {Math.floor((props.results[key] / tot) * 100)}%
+                                    {key} - {tot === 0 ? "" : Math.floor((props.results[key] / tot) * 100)}%
                                 </Typography>
                             </Box>
                             <Box sx={{ width: "100%", mr: 1 }}>
                                 <LinearProgress
                                     variant="determinate"
                                     color={key === props.answer ? "secondary" : "primary"}
-                                    value={Math.floor(
+                                    value={ tot === 0 ? 0 : Math.floor(
                                         (props.results[key] / tot) * 100
                                     )}
                                     sx={{
