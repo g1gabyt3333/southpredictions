@@ -29,7 +29,7 @@ export default function Predictions() {
         <Container maxWidth="xl" sx={{ marginTop: "6vh", display: "flex", flexDirection: "column", rowGap: "20px" }}>
 
             {values.map((prediction) => (
-                <Prediction key={prediction.id} id={prediction.id} data={prediction} />
+                <Prediction key={prediction.id}  data={prediction} user={user}/>
             ))}
         </Container>
     );

@@ -10,11 +10,11 @@ import { Chip, requirePropFactory } from "@mui/material";
 import Results from "./Results";
 import { Divider } from "@mui/material";
 
-export default function Prediction({ data }) {
+export default function Prediction({ data, user }) {
     
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
 
-    const [user, loading, error] = useAuthState(app.auth);
+    // const [user, loading, error] = useAuthState(app.auth);
     // const query = app.db.doc(`/predictions/${data.id}/votes/${user.uid}`);
     // const [value, load, e] = useCollectionData(query);
     
