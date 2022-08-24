@@ -18,11 +18,15 @@ service cloud.firestore {
     
     match /predictions/{prediction} {
 			allow read: if canAccess(request.auth)
+      allow write: if (canAccess(request.auth) && get(/databases/$(database)/documents/user/$(request.auth.token.email.split("@")[0])).data.admin == true)
     }
-    match /predictions/{prediction}/userPredictions/{userPrediction} {
-    	allow create, update: if (canAccess(request.auth) && (request.auth.uid == request.resource.id))
+    
+    match /predictions/{prediction}/votes/{userPrediction} {
+    	allow create: if (canAccess(request.auth) && (request.auth.uid == request.resource.id)) 
+      allow read: if (canAccess(request.auth) && (request.auth.uid == userPrediction))
      
     }
+    
     function canAccess(auth) {
       
       	return (auth != null) && (auth.token.email.split("@")[1] == "wwprsd.org");
