@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    match /forum/{database} {
+      allow read, create: if canAccess(request.auth)
+      
+    }
+    match /forum/{database}/replies/{reply} {
+    	
+      allow read, create: if canAccess(request.auth)
+    }
+    match /user/{profile} {
+    
+    	allow read: if canAccess(request.auth)
+    
+    }
+    
+    match /predictions/{prediction} {
+			allow read: if canAccess(request.auth)
+    }
+    match /predictions/{prediction}/userPredictions/{userPrediction} {
+    	allow create, update: if (canAccess(request.auth) && (request.auth.uid == request.resource.id))
+     
+    }
+    function canAccess(auth) {
+      
+      	return (auth != null) && (auth.token.email.split("@")[1] == "wwprsd.org");
+      }
+  }
+}
