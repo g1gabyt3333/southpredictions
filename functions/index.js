@@ -1,4 +1,16 @@
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+admin.initializeApp();
+
+
+
+exports.changeTally = functions.firestore
+    .document('predictions/{predictionId}/votes/{voteId}')
+    .onCreate((snap, context) => {
+        const data = snap.data();
+        const predictionId = context.params.predictionId;
+        const voteId = context.params.voteId;
+    })
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
