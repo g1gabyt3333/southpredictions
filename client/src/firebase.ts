@@ -32,14 +32,14 @@ const db = firebase.firestore();
 
 
 
-const signIn = () => {
+const signIn = () : void => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
 };
 
 
 
-const signOut = () => {
+const signOut = () : void => {
     auth.signOut();
 };
 

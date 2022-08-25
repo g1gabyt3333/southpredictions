@@ -3,6 +3,13 @@ import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container } from "@mui/material";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import { User } from "firebase/auth";
+
+interface IAdminProps {
+
+
+    user: User | null | undefined;
+}
 
 function AdminPage() {
     const [user, loading, error] = useAuthState(app.auth);
@@ -16,11 +23,11 @@ function AdminPage() {
     }
 }
 
-function AdminPageContent(props) {
+function AdminPageContent(props: IAdminProps) {
     const checkAdmin = app.db
         .collection("/user")
         .doc(props.user.email.split("@")[0]);
-    const [data, load, e2] = useDocumentData(checkAdmin);
+    const [data, load, e2] = useDocumentData(checkAdmin as any);
     console.log(e2);
     console.log(data);
 
