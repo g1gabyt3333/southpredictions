@@ -1,7 +1,7 @@
 import React from "react";
 import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Container } from "@mui/material";
+import { Container, Tabs, Tab } from "@mui/material";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
 function AdminPage() {
@@ -24,6 +24,10 @@ function AdminPageContent(props) {
     console.log(e2);
     console.log(data);
 
+
+    if(load) {
+        return <div>Loading...</div>;
+    }
     if (!data || e2 || data.admin !== true) {
         return <div> You must be an admin to view page! </div>;
     }
@@ -33,6 +37,7 @@ function AdminPageContent(props) {
         <Container>
 
             <h1>Admin Page</h1>
+
         </Container>
     );
 
