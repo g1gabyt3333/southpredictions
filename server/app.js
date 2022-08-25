@@ -1,6 +1,10 @@
 var express = require("express");
 var path = require("path");
 var app = express();
+const admin = require("firebase-admin");
+admin.initializeApp();
+
+ 
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.resolve(__dirname, "../client/build")));

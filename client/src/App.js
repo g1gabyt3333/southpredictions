@@ -9,6 +9,7 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Profile from "./components/Profile";
 import ForumPost from "./components/ForumPost";
+import AdminPage from "./components/AdminPage";
 
 import * as app from "./firebase";
 import Forum from "./components/Forum";
@@ -38,7 +39,13 @@ export default function App() {
                     <Route exact path="/" render={() => <Home user={user} />} />
                     <Route exact path="/predictions" component={Predictions} />
                     <Route exact path="/leaderboard" component={Leaderboard} />
-                    <Route exact path="/forum/:id" render={(props) => <ForumPost postId={props.match.params.id}/>} />
+                    <Route
+                        exact
+                        path="/forum/:id"
+                        render={(props) => (
+                            <ForumPost postId={props.match.params.id} />
+                        )}
+                    />
                     <Route exact path="/forum" component={Forum} />
                     <Route
                         path={"/profile/:id"}
@@ -46,6 +53,7 @@ export default function App() {
                             <Profile userId={props.match.params.id} />
                         )}
                     />
+                    <Route path={"/admin"} component={AdminPage} />
                 </Switch>
             </ThemeProvider>
         </div>

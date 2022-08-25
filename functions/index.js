@@ -6,10 +6,23 @@ admin.initializeApp();
 
 exports.changeTally = functions.firestore
     .document('predictions/{predictionId}/votes/{voteId}')
-    .onCreate((snap, context) => {
+    .onCreate(function async(snap, context) {
         const data = snap.data();
         const predictionId = context.params.predictionId;
         const voteId = context.params.voteId;
+
+        const db = admin.firestore();
+
+        const predictionRef = db.collection('predictions').doc(predictionId);
+        const prediction = await predictionRef.get();
+        let predictionData = prediction.data();
+        predictionData.results[data.vote]++;
+        await predictionRef.update(predictionData);
+
+        functions.logger.log("Changing tally for", predictionId, "by 1")
+
+
+        
     })
 
 // // Create and Deploy Your First Cloud Functions
