@@ -1,7 +1,7 @@
 import React from "react";
 import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Container, Tabs, Tab } from "@mui/material";
+import { Container} from "@mui/material";
 import { useDocumentData, useCollectionData } from "react-firebase-hooks/firestore";
 import { serverTimestamp }  from "firebase/firestore";
 import  AdminPrediction  from "./AdminPrediction";

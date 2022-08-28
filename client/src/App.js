@@ -19,6 +19,8 @@ const darkTheme = createTheme({
     palette: {
         mode: "dark",
     },
+    //make buttons use light theme
+    
 });
 
 export default function App() {
