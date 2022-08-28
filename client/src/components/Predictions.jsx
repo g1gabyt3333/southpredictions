@@ -24,6 +24,7 @@ export default function Predictions() {
     if (loading || load) {
         return <div>Loading...</div>;
     }
+
     console.log(values)
     return (
         <Container maxWidth="xl" sx={{ marginTop: "6vh", display: "flex", flexDirection: "column", rowGap: "20px" }}>

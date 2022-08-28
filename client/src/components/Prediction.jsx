@@ -40,9 +40,9 @@ export default function Prediction({ data }) {
     // data.answer === option ? \
 
     const chipColor = (option) => {
-        if (option === data.answer) {
+        if (option === data.answer) { //if answer
             return "success";
-        } else if (value && value.vote === option) {
+        } else if (value && value.vote === option) { //your option 
             return "primary";
         } else {
             return "default";
@@ -65,7 +65,7 @@ export default function Prediction({ data }) {
                     </Typography>
                     <Typography variant="h5" component="div">
                         {data.prediction}
-                        {data.isCompleted ? " (Completed)" : " (Pending)"}
+                        {data.isCompleted === true ? " (Completed)" : (data.isCompleted === "awaiting" ?  " (Awaiting results)" : " (Pending)")}
                     </Typography>
                 </CardContent>
                 <CardActions>

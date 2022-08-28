@@ -2,11 +2,12 @@ import React from "react";
 import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Tabs, Tab } from "@mui/material";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useDocumentData, useCollectionData } from "react-firebase-hooks/firestore";
+import { serverTimestamp }  from "firebase/firestore";
+import  AdminPrediction  from "./AdminPrediction";
 
 function AdminPage() {
     const [user, loading, error] = useAuthState(app.auth);
-    console.log(user);
     if (error) {
         return <div> You must be signed in to view page! </div>;
     } else if (loading) {
@@ -19,10 +20,8 @@ function AdminPage() {
 function AdminPageContent(props) {
     const checkAdmin = app.db
         .collection("/user")
-        .doc(props.user.email.split("@")[0]);
+        .doc(props.user.uid);
     const [data, load, e2] = useDocumentData(checkAdmin);
-    console.log(e2);
-    console.log(data);
 
 
     if(load) {
@@ -32,16 +31,65 @@ function AdminPageContent(props) {
         return <div> You must be an admin to view page! </div>;
     }
 
+    const addNewPrediction = () => {
+        app.db.collection("/predictions").add({
+            dateCreated: serverTimestamp(),
+            isCompleted: false,
+            options: [
+                "Yes",
+                "No",
+            ],
+            prediction: "Is Rajat Gupta a good valorant player?",
+            results: {
+                "Yes" : 0,
+                "No": 0
+            }
+                
+            
+
+        })
+
+
+
+    }
+
     return ( 
 
         <Container>
 
             <h1>Admin Page</h1>
+            <button onClick={addNewPrediction}>Click</button>
+            <Predictions />
 
         </Container>
     );
 
     
+}
+
+const Predictions = (props) => { 
+    const predQuery = app.db.collection("/predictions").where("isCompleted", "!=", true)
+    const [predictions, load, e] = useCollectionData(predQuery, {
+        idField: "id",
+    });
+
+    console.log(predictions)
+
+
+    if (load) {
+        return <div>Loading...</div>;
+    }
+    return <> 
+    
+        {
+            predictions.map((prediction) => (
+                <AdminPrediction key={prediction.id} data={prediction} />
+            ))
+        }
+    </>;
+
+
+
 }
 
 export default AdminPage;
