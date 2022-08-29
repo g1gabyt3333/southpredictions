@@ -1,5 +1,5 @@
 import React from "react";
-import * as app from "../firebase";
+import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Snackbar, Alert } from "@mui/material";
 import Prediction from "./Prediction";

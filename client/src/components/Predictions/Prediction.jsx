@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as app from "../firebase";
+import * as app from "../../firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";

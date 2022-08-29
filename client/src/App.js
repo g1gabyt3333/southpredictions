@@ -1,4 +1,4 @@
-import Predictions from "./components/Predictions";
+import Predictions from "./components/Predictions/Predictions";
 import Leaderboard from "./components/Leaderboard";
 import "./App.css";
 import Home from "./components/Home";
@@ -9,7 +9,7 @@ import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Profile from "./components/Profile";
 import ForumPost from "./components/ForumPost";
-import AdminPage from "./components/AdminPage";
+import AdminPage from "./components/Admin/AdminPage";
 
 import * as app from "./firebase";
 import Forum from "./components/Forum";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, Typography, CardActions, Chip} from "@mui/material";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 
 export default function AdminPrediction({data}) {

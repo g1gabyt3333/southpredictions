@@ -6,7 +6,7 @@ admin.initializeApp();
 
 exports.changeTally = functions.firestore
     .document('predictions/{predictionId}/votes/{voteId}')
-    .onCreate(function async(snap, context) {
+    .onCreate(async function(snap, context) {
         const data = snap.data();
         const predictionId = context.params.predictionId;
         const voteId = context.params.voteId;
@@ -25,6 +25,26 @@ exports.changeTally = functions.firestore
         
     })
 
+
+
+exports.createUser = functions.auth.user().onCreate(async function(user) {
+
+    if(user.email.split("@")[1] !== "wwprsd.org"){
+        functions.logger.log("User not from WWPRSD, not creating account")
+        
+    }
+    else {
+        const db = admin.firestore();
+        const userRef = db.collection('user').doc(user.uid);
+        await userRef.set({
+            email: user.email,
+            name: user.displayName,
+            uid: user.uid,
+            admin: false,
+        })
+    }
+    
+})
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //

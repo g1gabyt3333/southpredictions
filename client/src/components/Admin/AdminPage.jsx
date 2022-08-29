@@ -1,5 +1,5 @@
 import React from "react";
-import * as app from "../firebase";
+import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container} from "@mui/material";
 import { useDocumentData, useCollectionData } from "react-firebase-hooks/firestore";
@@ -39,7 +39,7 @@ function AdminPageContent(props) {
                 "Yes",
                 "No",
             ],
-            prediction: "Is Rajat Gupta a good valorant player?",
+            prediction: "Will Rajat Gupta pull Minthra GIN?",
             results: {
                 "Yes" : 0,
                 "No": 0
