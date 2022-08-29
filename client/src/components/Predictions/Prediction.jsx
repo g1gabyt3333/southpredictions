@@ -6,7 +6,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Typography from "@mui/material/Typography";
-import { Chip, requirePropFactory } from "@mui/material";
+import { Chip} from "@mui/material";
 import Results from "./Results";
 import { Divider } from "@mui/material";
 
@@ -19,7 +19,7 @@ export default function Prediction(props) {
         .doc(props.data.id)
         .collection("/votes")
         .doc(user.uid);
-    const [value, error] = useDocumentData(query, { idField: "id" });
+    const [value] = useDocumentData(query, { idField: "id" });
 
     const addVote = (e) => {
         const ref = app.db

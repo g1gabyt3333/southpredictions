@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, CardActions, Chip} from "@mui/material";
 import { db } from "../../firebase";
 
 
+
 export default function AdminPrediction({data}) {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
     const setVote = async(e) => {
