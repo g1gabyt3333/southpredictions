@@ -9,6 +9,7 @@ import {
 
 import AdminPrediction from "./AdminPrediction";
 import AdminFunctions from "./AdminFunctions";
+import AddPrediction from "./AddPrediction";
 
 function AdminPage() {
     const [user, loading, error] = useAuthState(app.auth);
@@ -45,7 +46,7 @@ function AdminPageContent(props) {
             case 1:
                 return <AdminFunctions />;
             case 2:
-                return <div>Item Three</div>;
+                return <AddPrediction />;
             default:
                 return <div>Item One</div>;
         }
