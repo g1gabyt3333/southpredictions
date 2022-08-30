@@ -13,13 +13,13 @@ import AddPrediction from "./AddPrediction";
 
 function AdminPage() {
     const [user, loading, error] = useAuthState(app.auth);
-    if (error) {
+    if (error || user === null) {
         return <div> You must be signed in to view page! </div>;
     } else if (loading) {
         return <div>Loading...</div>;
     } else {
         return <AdminPageContent user={user} />;
-    }
+    }   
 }
 
 
