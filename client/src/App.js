@@ -13,6 +13,7 @@ import AdminPage from "./components/Admin/AdminPage";
 
 import * as app from "./firebase";
 import Forum from "./components/Forum";
+import { CircularProgress } from "@mui/material";
 
 //create mui dark mode
 const darkTheme = createTheme({
@@ -24,7 +25,7 @@ const darkTheme = createTheme({
 });
 
 export default function App() {
-    const [user] = useAuthState(app.auth);
+    const [user, loading] = useAuthState(app.auth);
 
     if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
@@ -32,6 +33,21 @@ export default function App() {
         }, 2500);
         return <div>WW-P students only! You will be signed out shortly!</div>;
     }
+    if (loading) {
+        return <div style={{
+
+            //center the loading screen on page
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            
+        }}>
+            <CircularProgress />
+            Loading...
+        </div>;
+    }
+
 
     return (
         <div className="App">

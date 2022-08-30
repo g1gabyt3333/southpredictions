@@ -1,7 +1,7 @@
 import React from "react";
 import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Container, Box, Tabs, Tab } from "@mui/material";
+import { Container, Box, Tabs, Tab, CircularProgress } from "@mui/material";
 import {
     useDocumentData,
     useCollectionData,
