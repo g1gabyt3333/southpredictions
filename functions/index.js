@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
+const db = admin.firestore();
 
 exports.changeTally = functions.firestore
     .document("predictions/{predictionId}/votes/{voteId}")
@@ -8,8 +9,6 @@ exports.changeTally = functions.firestore
         const data = snap.data();
         const predictionId = context.params.predictionId;
         const voteId = context.params.voteId;
-
-        const db = admin.firestore();
 
         const predictionRef = db.collection("predictions").doc(predictionId);
         const prediction = await predictionRef.get();
@@ -43,6 +42,35 @@ exports.getUsers = functions.https.onCall((data, context) => {
     return auth;
 });
 
+exports.processPrediction = functions.firestore
+    .document("predictions/{predictionId}")
+    .onUpdate(async function (change, context) {
+        const data = change.after.data();
+        const predictionId = context.params.predictionId;
+        let userPredictions = (await db
+            .collection("/predictions/" + predictionId + "/votes")
+            .get()).docs.map((doc) => {
+                
+                
+                const q2 = db.collection("/user").doc(doc.id)
+
+
+
+            });
+
+
+        return userPredictions;
+    });
+
+exports.docTemplate = functions.https.onCall(async function (data, context) {
+    let data2 = await db.collection("/predictions").get();
+    let arr = [];
+
+    for (let doc of data2.docs) {
+        arr.push(doc.data());
+    }
+    return arr;
+});
 // exports.makeUser = functions.https.onCall(function (data, context) {
 //     const auth = admin
 //         .auth()

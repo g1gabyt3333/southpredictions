@@ -27,6 +27,13 @@ import { Button} from "@mui/material";
 //         }
 //     })
 // }
+
+
+const debug = async() => {
+    let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
+    let userArray = await getCollectionTemplate();
+    console.log(userArray)
+}
 export default function AdminFunctions() {
     const addNewPrediction = () => {
         app.db.collection("/predictions").add({
@@ -44,7 +51,7 @@ export default function AdminFunctions() {
     return (
         <>
             <Button variant="contained" onClick={addNewPrediction}>Add a temp prediction</Button>
-            {/* <Button variant="contained" onClick={setUsers}>Users</Button> */}
+            <Button variant="contained" onClick={debug}>Debug</Button>
         </>
     );
 }
