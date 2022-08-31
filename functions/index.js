@@ -45,19 +45,54 @@ exports.getUsers = functions.https.onCall((data, context) => {
 exports.processPrediction = functions.firestore
     .document("predictions/{predictionId}")
     .onUpdate(async function (change, context) {
-        const data = change.after.data();
+        let choice = "";
+        if (change.after.data().isCompleted === true) {
+            choice = change.after.data().answer;
+        } else {
+            functions.logger.log("Prediction not completed not processing");
+            return;
+        }
         const predictionId = context.params.predictionId;
-        let userPredictions = (await db
-            .collection("/predictions/" + predictionId + "/votes")
-            .get()).docs.map((doc) => {
-                
-                
-                const q2 = db.collection("/user").doc(doc.id)
+        functions.logger.log(
+            "Processing prediction",
+            context.params.predictionId,
+            "with choice",
+            choice
+        );
+        let userPredictions = (
+            await db.collection("/predictions/" + predictionId + "/votes").get()
+        ).docs.map((doc) => {
+            const q2 = db.collection("/user").doc(doc.id);
 
-
-
+            q2.get().then((data) => {
+                functions.logger.log(data)
+                if (doc.data().vote === choice) {
+                    q2.update({
+                        predictions: {
+                            wins: data.data().predictions.wins + 1,
+                            losses: data.data().predictions.losses,
+                        },
+                    }).then(() => {
+                        q2.collection("/votes").doc(context.params.predictionId).set({
+                            vote: doc.data().vote,
+                            isCorrect: true,
+                        });
+                    });
+                } else {
+                    q2.update({
+                        predictions: {
+                            wins: data.data().predictions.wins,
+                            losses: data.data().predictions.losses + 1,
+                        },
+                    }).then(() => {
+                        q2.collection("/votes").doc(context.params.predictionId).set({
+                            vote: doc.data().vote,
+                            isCorrect: false,
+                        });
+                    });
+                }
             });
-
+        });
 
         return userPredictions;
     });
