@@ -88,14 +88,17 @@ export default function AddPrediction() {
     });
 
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         console.log(state);
         const ref = app.db.collection("/predictions")
         let resultsT = {};
         state.options.forEach((option) => {
             resultsT[option] = 0;
         })
-        
+        if(state.options.length < 2 ||  state.prediction === "") {
+            console.log("Error");
+            return;
+        }
         await ref.add({
             dateCreated: serverTimestamp(),
             isCompleted: false,
@@ -181,7 +184,7 @@ export default function AddPrediction() {
                     </Button>
             </Box>
             <Divider sx={{ marginTop: "15px", marginBottom: "" }} />
-            {state.prediction != "" ? <PredictionPreview data={{ ...state }} />  : ""}
+            {state.prediction !== "" ? <PredictionPreview data={{ ...state }} />  : ""}
         </>
     );
 }

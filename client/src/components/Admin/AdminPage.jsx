@@ -18,8 +18,11 @@ function AdminPage() {
     } else if (loading) {
         return <div>Loading...</div>;
     } else {
+        
+        
+
         return <AdminPageContent user={user} />;
-    }   
+    }
 }
 
 
@@ -37,8 +40,6 @@ function AdminPageContent(props) {
         return <div> You must be an admin to view page! </div>;
     }
 
-    
-
     const switchComponent = (tabIndex) => {
         switch (tabIndex) {
             case 0:
@@ -50,17 +51,23 @@ function AdminPageContent(props) {
             default:
                 return <div>Item One</div>;
         }
-    }
+    };
 
     const handleChange = (e, newValue) => {
         setTabIndex(newValue);
         console.log(tabIndex);
-    }
+    };
 
     return (
         <Container maxWidth="xl">
             <h1>Admin Page</h1>
-            <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: "15px" }}>
+            <Box
+                sx={{
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    marginBottom: "15px",
+                }}
+            >
                 <Tabs
                     value={tabIndex}
                     onChange={handleChange}
@@ -69,16 +76,13 @@ function AdminPageContent(props) {
                     scrollButtons="auto"
                     allowScrollButtonsMobile
                 >
-                    <Tab label="Open Predictions"/>
+                    <Tab label="Open Predictions" />
                     <Tab label="Admin Functions" />
                     <Tab label="Add a prediction" />
                 </Tabs>
             </Box>
-            
-
 
             {switchComponent(tabIndex)}
-
         </Container>
     );
 }

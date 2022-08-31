@@ -32,7 +32,9 @@ export default function AdminPrediction({data}) {
 
     const removePrediction = async(e) => {
         const ref = db.collection("/predictions").doc(data.id);
+        const ref2 = db.collection("/predictions").doc(data.id).collection("/votes");
         await ref.delete();
+        await ref2.delete();
     }
 
     return (

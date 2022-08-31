@@ -1,8 +1,32 @@
 import React from "react";
 import * as app from "../../firebase";
 import { serverTimestamp } from "firebase/firestore";
-import { Button } from "@mui/material";
+import { Button} from "@mui/material";
 
+
+
+
+// const setUsers = async() => {
+//     let makeUser = app.functions.httpsCallable("makeUser");
+//     let userArray = await (await makeUser()).data.users;
+//     userArray.forEach((user) => {
+//         if(user.email.split("@")[1] === "wwprsd.org" && user.email.split("@")[0] !== "23ak0321") {
+//             const query = app.db.collection(`/user`).doc(user.uid);
+//             console.log(user)
+//             const newDoc =  query.set({
+//                 admin: false,
+//                 email: user.email,
+//                 name: user.displayName,
+//                 uid: user.uid,
+//                 predictions: {
+//                     wins: 0,
+//                     losses: 0,
+//                 }
+//             })
+//             console.log(newDoc)
+//         }
+//     })
+// }
 export default function AdminFunctions() {
     const addNewPrediction = () => {
         app.db.collection("/predictions").add({
@@ -20,6 +44,7 @@ export default function AdminFunctions() {
     return (
         <>
             <Button variant="contained" onClick={addNewPrediction}>Add a temp prediction</Button>
+            {/* <Button variant="contained" onClick={setUsers}>Users</Button> */}
         </>
     );
 }

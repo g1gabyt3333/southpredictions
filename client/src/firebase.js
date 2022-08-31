@@ -1,6 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import "firebase/compat/functions"
 
 
 
@@ -29,6 +30,7 @@ firebase.initializeApp({
  */
 const auth = firebase.auth();
 const db = firebase.firestore();
+let functions = firebase.functions();
 
 
 
@@ -45,5 +47,5 @@ const signOut = () => {
 
 
 export {
-    signIn, signOut, auth, db
+    signIn, signOut, auth, db, functions
 }
