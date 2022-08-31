@@ -65,6 +65,9 @@ function AdminPageContent(props) {
                     value={tabIndex}
                     onChange={handleChange}
                     aria-label="basic tabs example"
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    allowScrollButtonsMobile
                 >
                     <Tab label="Open Predictions"/>
                     <Tab label="Admin Functions" />
