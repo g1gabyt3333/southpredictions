@@ -49,7 +49,7 @@ const reducer = (state, action) => {
             return {
                 prediction: "",
                 options: [],
-                optionField: 0,
+                option: "",
             };
 
         default:
@@ -86,7 +86,7 @@ export default function AddPrediction() {
         options: [],
         option: "",
     });
-
+    
 
     const handleSubmit = async () => {
         console.log(state);

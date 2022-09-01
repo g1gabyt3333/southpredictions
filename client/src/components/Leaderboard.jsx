@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import * as app from "../firebase";
 import LeaderboardRow from "./LeaderboardRow";
 import { CircularProgress } from "@mui/material";
@@ -73,6 +73,8 @@ const reducer = (state, action) => {
                 error: true,
                 loading: false,
             };
+        default:
+            return state;
     }
 };
 
@@ -95,6 +97,7 @@ export default function Leaderboard() {
         }).catch((e) => {
             dispatch({ type: "NO_LOAD" });
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     
@@ -107,7 +110,9 @@ export default function Leaderboard() {
         );
     }
     if(state.error) {
-
+        return (
+            <Alert severity="error">Could not fetch data. Try again later</Alert>
+        )
     }
 
 

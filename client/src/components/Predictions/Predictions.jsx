@@ -3,15 +3,17 @@ import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Snackbar, Alert } from "@mui/material";
 import Prediction from "./Prediction";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import TabBar from "./TabBar";
+import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 
 export default function Predictions() {
     const [user, loading, error] = useAuthState(app.auth);
     const [openError, setOpenError] = React.useState(false);
+    const [filterType, setFilterType] = React.useState(0); // 0 = pending, 1 = completed, 2= all
     const query = app.db
         .collection("/predictions")
         .orderBy("dateCreated", "desc");
-    const [values, load, e] = useCollectionData(query, {
+    const [values, load, e] = useCollectionDataOnce(query, {
         idField: "id",
     });
 
@@ -27,7 +29,20 @@ export default function Predictions() {
         setOpenError(false);
     };
 
-    console.log(values);
+    const handleFilter = (e, newValue) => {
+        setFilterType(newValue);
+    }
+    let filter = [];
+    if(filterType === 0) {
+        filter = values.filter(value => value.isCompleted === false);
+    } 
+    else if(filterType === 1) {
+        filter = values.filter(value => value.isCompleted === true);
+    }
+    else {
+        filter = values;
+    }
+    console.log(filter)
     return (
         <Container
             maxWidth="xl"
@@ -38,7 +53,8 @@ export default function Predictions() {
                 rowGap: "20px",
             }}
         >
-            {values.map((prediction) => (
+            <TabBar handleFilter={handleFilter} filter={filterType}/>
+            {filter.map((prediction) => (
                 <Prediction key={prediction.id} data={prediction} user={user} e={setOpenError}/>
             ))}
             <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
