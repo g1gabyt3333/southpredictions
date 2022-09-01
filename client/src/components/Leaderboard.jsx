@@ -78,8 +78,6 @@ const reducer = (state, action) => {
     }
 };
 
-
-
 export default function Leaderboard() {
     let getLeaderboard = app.functions.httpsCallable("getLeaderboard");
     const [state, dispatch] = React.useReducer(reducer, {
@@ -88,33 +86,35 @@ export default function Leaderboard() {
         lb: [],
     });
 
-
-    
-
     useEffect(() => {
-        getLeaderboard().then((data) => {
-            dispatch({ type: "LOADED", payload: data.data });
-        }).catch((e) => {
-            dispatch({ type: "NO_LOAD" });
-        });
+        getLeaderboard()
+            .then((data) => {
+                if (data.data.error) {
+                    dispatch({ type: "NO_LOAD" });
+                } else {
+                    dispatch({ type: "LOADED", payload: data.data });
+                }
+            })
+            .catch((e) => {
+                dispatch({ type: "NO_LOAD" });
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    
-
-    if(state.loading) {
+    if (state.loading) {
         return (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <CircularProgress />
             </Box>
         );
     }
-    if(state.error) {
+    if (state.error) {
         return (
-            <Alert severity="error">Could not fetch data. Try again later</Alert>
-        )
+            <Alert severity="error">
+                Could not fetch data. Try again later
+            </Alert>
+        );
     }
-
 
     return (
         <div>
@@ -130,7 +130,7 @@ export default function Leaderboard() {
                         </TableHead>
                         <TableBody>
                             {state.lb.map((row) => (
-                                <LeaderboardRow data={row} key={row.name}/>
+                                <LeaderboardRow data={row} key={row.name} />
                             ))}
                         </TableBody>
                     </Table>
