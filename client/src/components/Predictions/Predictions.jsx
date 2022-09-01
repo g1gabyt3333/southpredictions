@@ -13,7 +13,7 @@ export default function Predictions() {
     const query = app.db
         .collection("/predictions")
         .orderBy("dateCreated", "desc");
-    const [values, load, e] = useCollectionDataOnce(query, {
+    const [values, load, e] = useCollectionData(query, {
         idField: "id",
     });
 
