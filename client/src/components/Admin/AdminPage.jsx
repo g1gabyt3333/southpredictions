@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect } from "react";
 import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Box, Tabs, Tab, CircularProgress } from "@mui/material";
@@ -13,6 +13,11 @@ import AddPrediction from "./AddPrediction";
 
 function AdminPage() {
     const [user, loading, error] = useAuthState(app.auth);
+
+    useEffect(() => {
+        document.title = "Admin Page";
+    }, []);
+
     if (error || user === null) {
         return <div> You must be signed in to view page! </div>;
     } else if (loading) {

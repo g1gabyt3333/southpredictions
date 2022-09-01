@@ -42,6 +42,31 @@ exports.getUsers = functions.https.onCall((data, context) => {
     return auth;
 });
 
+exports.getLeaderboard = functions.https.onCall(async function (data, context) {
+
+    if(!context.auth || context.auth.token.email.split("@")[1] !== "wwprsd.org") {
+        return {
+            error: "You are not authorized to do this"
+        }
+    }
+    const db = admin.firestore();
+    const users = db.collection("user").orderBy("predictions.wins", "desc").limit(10);
+
+    const lbData =  (await users.get()).docs;
+    const leaderboard = lbData.map(doc => {
+        return {
+            name: doc.data().name,
+            wins: doc.data().predictions.wins,
+            losses: doc.data().predictions.losses,
+        }
+    })
+
+
+    return leaderboard;
+
+
+});
+
 exports.processPrediction = functions.firestore
     .document("predictions/{predictionId}")
     .onUpdate(async function (change, context) {
@@ -65,7 +90,7 @@ exports.processPrediction = functions.firestore
             const q2 = db.collection("/user").doc(doc.id);
 
             q2.get().then((data) => {
-                functions.logger.log(data)
+                functions.logger.log(data);
                 if (doc.data().vote === choice) {
                     q2.update({
                         predictions: {
@@ -73,10 +98,12 @@ exports.processPrediction = functions.firestore
                             losses: data.data().predictions.losses,
                         },
                     }).then(() => {
-                        q2.collection("/votes").doc(context.params.predictionId).set({
-                            vote: doc.data().vote,
-                            isCorrect: true,
-                        });
+                        q2.collection("/votes")
+                            .doc(context.params.predictionId)
+                            .set({
+                                vote: doc.data().vote,
+                                isCorrect: true,
+                            });
                     });
                 } else {
                     q2.update({
@@ -85,10 +112,12 @@ exports.processPrediction = functions.firestore
                             losses: data.data().predictions.losses + 1,
                         },
                     }).then(() => {
-                        q2.collection("/votes").doc(context.params.predictionId).set({
-                            vote: doc.data().vote,
-                            isCorrect: false,
-                        });
+                        q2.collection("/votes")
+                            .doc(context.params.predictionId)
+                            .set({
+                                vote: doc.data().vote,
+                                isCorrect: false,
+                            });
                     });
                 }
             });

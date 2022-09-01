@@ -27,6 +27,8 @@ const darkTheme = createTheme({
 export default function App() {
     const [user, loading] = useAuthState(app.auth);
 
+   
+
     if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
             app.auth.signOut();

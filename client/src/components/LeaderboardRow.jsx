@@ -12,7 +12,7 @@ export default class LeaderboardRow extends Component {
                 }}
             >
                 <TableCell component="th" scope="row">
-                    {this.props.data.user}
+                    {this.props.data.name}
                 </TableCell>
                 <TableCell align="center">{this.props.data.wins}</TableCell>
                 <TableCell align="center">{this.props.data.losses}</TableCell>

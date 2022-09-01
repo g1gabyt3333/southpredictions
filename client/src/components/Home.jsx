@@ -3,6 +3,12 @@ import { Grid, Button, Typography } from "@mui/material";
 import * as app from "../firebase";
 
 export default class Home extends Component {
+
+
+
+    componentDidMount() {
+        document.title = "Home";
+    }
     render() {
         return (
             <Grid
