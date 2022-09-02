@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Snackbar, Alert } from "@mui/material";
 import Prediction from "./Prediction";
 import TabBar from "./TabBar";
-import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export default function Predictions() {
     const [user, loading, error] = useAuthState(app.auth);

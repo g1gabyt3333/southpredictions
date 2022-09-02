@@ -4,7 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LinearProgress, Box } from "@mui/material";
+import { LinearProgress, Box, Tooltip } from "@mui/material";
 
 export default function Results(props) {
     const tot = Object.values(props.results).reduce((a, b) => a + b, 0);
@@ -37,22 +37,39 @@ export default function Results(props) {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {key} - {tot === 0 ? "" : Math.floor((props.results[key] / tot) * 100)}%
+                                    {key} -{" "}
+                                    {tot === 0
+                                        ? ""
+                                        : Math.floor(
+                                              (props.results[key] / tot) * 100
+                                          )}
+                                    %
                                 </Typography>
                             </Box>
-                            <Box sx={{ width: "100%", mr: 1 }}>
-                                <LinearProgress
-                                    variant="determinate"
-                                    color={key === props.answer ? "secondary" : "primary"}
-                                    value={ tot === 0 ? 0 : Math.floor(
-                                        (props.results[key] / tot) * 100
-                                    )}
-                                    sx={{
-                                        ...styles,
-                                        
-                                    }}
-                                />
-                            </Box>
+                            <Tooltip title={props.results[key]} placement="top">
+                                <Box sx={{ width: "100%", mr: 1 }}>
+                                    <LinearProgress
+                                        variant="determinate"
+                                        color={
+                                            key === props.answer
+                                                ? "secondary"
+                                                : "primary"
+                                        }
+                                        value={
+                                            tot === 0
+                                                ? 0
+                                                : Math.floor(
+                                                      (props.results[key] /
+                                                          tot) *
+                                                          100
+                                                  )
+                                        }
+                                        sx={{
+                                            ...styles,
+                                        }}
+                                    />
+                                </Box>
+                            </Tooltip>
                         </Box>
                     ))}
                 </AccordionDetails>

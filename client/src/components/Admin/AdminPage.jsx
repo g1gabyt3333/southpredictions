@@ -1,7 +1,7 @@
 import React, {useEffect } from "react";
 import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Container, Box, Tabs, Tab, CircularProgress } from "@mui/material";
+import { Container, Box, Tabs, Tab} from "@mui/material";
 import {
     useDocumentData,
     useCollectionData,
@@ -96,7 +96,7 @@ const Predictions = (props) => {
     const predQuery = app.db
         .collection("/predictions")
         .where("isCompleted", "!=", true);
-    const [predictions, load, e] = useCollectionData(predQuery, {
+    const [predictions, load] = useCollectionData(predQuery, {
         idField: "id",
     });
 
