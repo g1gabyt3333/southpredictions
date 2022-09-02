@@ -47,9 +47,9 @@ export default function AdminPrediction({data}) {
                 {data.options.map((option, index) => (
                     <Chip
                         key={index}
-                        variant={data.isCompleted ? "outlined" : "filled"}
+                        variant={data.isCompleted === true ? "outlined" : "filled"}
                         label={option}
-                        onClick={data.isCompleted ? null : setVote}
+                        onClick={data.isCompleted === true ? null : setVote}
                         color={"default"}
                         sx={{ ...padding }}
                     />
