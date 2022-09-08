@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import Profile from "./components/Profile";
 import ForumPost from "./components/ForumPost";
 import AdminPage from "./components/Admin/AdminPage";
@@ -21,8 +22,8 @@ const darkTheme = createTheme({
     palette: {
         mode: "dark",
         background: {
-            default: "#333333"
-        }
+            default: "#333333",
+        },
     },
     //make buttons use light theme
 });
@@ -48,22 +49,42 @@ export default function App() {
         return <div>WW-P students only! You will be signed out shortly!</div>;
     }
     if (loading) {
-        return (
-            <div
-                style={{
-                    //center the loading screen on page
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                }}
-            >
-                <CircularProgress />
-                Loading...
-            </div>
-        );
+       return <Loading />;
     }
+    
+    
 
+
+
+    return <AppLoggedIn user={user} />;
+}
+
+const Loading = () => {
+    return (
+        <div
+            style={{
+                //center the loading screen on page
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+            }}
+        >
+            <CircularProgress />
+            Loading...
+        </div>
+    );
+};
+
+const AppLoggedIn = ({user}) => {
+    
+    
+    const query = app.db.collection("/user").doc(user.uid);
+    const [data, loading, error] = useDocumentDataOnce(query);
+
+    if (loading) {
+        return <Loading />;
+    }
     return (
         <Box>
             <div className="App">
@@ -105,7 +126,7 @@ export default function App() {
             </div>
         </Box>
     );
-}
+};
 
 /**
  * Sign in with Google.
