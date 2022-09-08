@@ -16,6 +16,7 @@ import { Box } from "@mui/system";
 import * as app from "./firebase";
 import Forum from "./components/Forum";
 import { CircularProgress } from "@mui/material";
+import { UserContext } from "./Providers/UserContext";
 
 //create mui dark mode
 const darkTheme = createTheme({
@@ -49,12 +50,10 @@ export default function App() {
         return <div>WW-P students only! You will be signed out shortly!</div>;
     }
     if (loading) {
-       return <Loading />;
+        return <Loading />;
+    } else if (user === null) {
+        return <Home user={user} />;
     }
-    
-    
-
-
 
     return <AppLoggedIn user={user} />;
 }
@@ -76,54 +75,57 @@ const Loading = () => {
     );
 };
 
-const AppLoggedIn = ({user}) => {
-    
-    
+const AppLoggedIn = ({ user }) => {
     const query = app.db.collection("/user").doc(user.uid);
-    const [data, loading, error] = useDocumentDataOnce(query);
+    const [userData, loading, error] = useDocumentDataOnce(query);
 
     if (loading) {
         return <Loading />;
     }
+    else if(error) {
+        return <div>Error: {error} {"(Please contact an admin)"} </div>;
+    }
     return (
         <Box>
-            <div className="App">
-                <ThemeProvider theme={darkTheme}>
-                    <Navbar user={user} />
-                    <Switch>
-                        <Route
-                            exact
-                            path="/"
-                            render={() => <Home user={user} />}
-                        />
-                        <Route
-                            exact
-                            path="/predictions"
-                            component={Predictions}
-                        />
-                        <Route
-                            exact
-                            path="/leaderboard"
-                            component={Leaderboard}
-                        />
-                        <Route
-                            exact
-                            path="/forum/:id"
-                            render={(props) => (
-                                <ForumPost postId={props.match.params.id} />
-                            )}
-                        />
-                        <Route exact path="/forum" component={Forum} />
-                        <Route
-                            path={"/profile/:id"}
-                            render={(props) => (
-                                <Profile userId={props.match.params.id} />
-                            )}
-                        />
-                        <Route path={"/admin"} component={AdminPage} />
-                    </Switch>
-                </ThemeProvider>
-            </div>
+            <UserContext.Provider value={user}>
+                <div className="App">
+                    <ThemeProvider theme={darkTheme}>
+                        <Navbar user={user} isAdmin={userData.admin} />
+                        <Switch>
+                            <Route
+                                exact
+                                path="/"
+                                render={() => <Home user={user} />}
+                            />
+                            <Route
+                                exact
+                                path="/predictions"
+                                component={Predictions}
+                            />
+                            <Route
+                                exact
+                                path="/leaderboard"
+                                component={Leaderboard}
+                            />
+                            <Route
+                                exact
+                                path="/forum/:id"
+                                render={(props) => (
+                                    <ForumPost postId={props.match.params.id} />
+                                )}
+                            />
+                            <Route exact path="/forum" component={Forum} />
+                            <Route
+                                path={"/profile/:id"}
+                                render={(props) => (
+                                    <Profile userId={props.match.params.id} />
+                                )}
+                            />
+                            <Route path={"/admin"} component={AdminPage} />
+                        </Switch>
+                    </ThemeProvider>
+                </div>
+            </UserContext.Provider>
         </Box>
     );
 };

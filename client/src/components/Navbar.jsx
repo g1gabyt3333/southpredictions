@@ -158,6 +158,7 @@ export default class navbar extends Component {
                                 signIn={app.signIn}
                                 signOut={app.signOut}
                                 user={this.props.user}
+                                isAdmin={this.props.isAdmin}
                             />
                         </Box>
                     </Toolbar>
@@ -212,6 +213,16 @@ const LoginButton = (props) => {
                     >
                         Profile
                     </MenuItem>
+                    {props.isAdmin ? 
+                    (<MenuItem
+                        onClick={handleClose}
+                        component={Link}
+                        id="admin"
+                        to={`/admin`}
+                    >
+                        Admin Panel
+                    </MenuItem>) : null}
+
                     <MenuItem onClick={handleClose} id="logout">
                         Logout
                     </MenuItem>
