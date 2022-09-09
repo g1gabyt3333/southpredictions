@@ -1,4 +1,4 @@
-import React, {useEffect } from "react";
+import React, {useEffect, useContext } from "react";
 import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Box, Tabs, Tab} from "@mui/material";
@@ -6,7 +6,7 @@ import {
     useDocumentData,
     useCollectionData,
 } from "react-firebase-hooks/firestore";
-
+import { UserContext } from "../../Providers/UserContext";
 import AdminPrediction from "./AdminPrediction";
 import AdminFunctions from "./AdminFunctions";
 import AddPrediction from "./AddPrediction";
@@ -34,15 +34,15 @@ function AdminPage() {
 
 
 function AdminPageContent(props) {
-    const checkAdmin = app.db.collection("/user").doc(props.user.uid);
-    const [data, load, e2] = useDocumentData(checkAdmin);
+    // const checkAdmin = app.db.collection("/user").doc(props.user.uid);
+    // const [data, load, e2] = useDocumentData(checkAdmin);
+
+    const user = useContext(UserContext);
+    console.log(user)
     const [tabIndex, setTabIndex] = React.useState(0);
 
-    if (load) {
-        return <div>Loading...</div>;
-    }
-    if (!data || e2 || data.admin !== true) {
-        return <div> You must be an admin to view page! </div>;
+    if (user.admin === false) {
+        return <div>You are not an admin!</div>;
     }
 
     const switchComponent = (tabIndex) => {
