@@ -75,6 +75,14 @@ const Loading = () => {
     );
 };
 
+const NotFound = () => {
+
+
+
+
+    return <div>Can't find page!</div> 
+}
+
 const AppLoggedIn = ({ user }) => {
     const query = app.db.collection("/user").doc(user.uid);
     const [userData, loading, error] = useDocumentDataOnce(query);
@@ -122,6 +130,7 @@ const AppLoggedIn = ({ user }) => {
                                 )}
                             />
                             <Route path={"/admin"} component={AdminPage} />
+                            <Route path={"*"} component={NotFound} />
                         </Switch>
                     </ThemeProvider>
                 </div>
