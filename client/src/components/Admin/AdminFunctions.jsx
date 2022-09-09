@@ -29,14 +29,10 @@ import { Button} from "@mui/material";
 // }
 
 
-const debug = async() => {
-    let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
-    let userArray = await getCollectionTemplate();
-    console.log(userArray)
-}
+
 export default function AdminFunctions() {
-    const addNewPrediction = () => {
-        app.db.collection("/predictions").add({
+    const addNewPrediction = async() => {
+        await app.db.collection("/privatePredictions").add({
             dateCreated: serverTimestamp(),
             isCompleted: false,
             options: ["Yes", "No"],
@@ -47,6 +43,12 @@ export default function AdminFunctions() {
             },
         });
     };
+
+    const debug = async() => {
+        let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
+        let userArray = await getCollectionTemplate();
+        console.log(userArray)
+    }
     // const [state, dispatch] = React.useReducer(reducer, {});
     return (
         <>
