@@ -6,12 +6,12 @@ import Prediction from "./Prediction";
 import TabBar from "./TabBar";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-export default function Predictions() {
+export default function Predictions({type}) {
     const [user, loading, error] = useAuthState(app.auth);
     const [openError, setOpenError] = React.useState(false);
     const [filterType, setFilterType] = React.useState(0); // 0 = pending, 1 = completed, 2= all
     const query = app.db
-        .collection("/predictions")
+        .collection(type === "private" ? "/privatePredictions" : "/predictions")
         .orderBy("dateCreated", "desc");
     const [values, load, e] = useCollectionData(query, {
         idField: "id",
@@ -42,7 +42,6 @@ export default function Predictions() {
     else {
         filter = values;
     }
-    console.log(filter)
     return (
         <Container
             maxWidth="xl"

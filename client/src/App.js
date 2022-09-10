@@ -95,7 +95,7 @@ const AppLoggedIn = ({ user }) => {
     }
     return (
         <Box>
-            <UserContext.Provider value={user}>
+            <UserContext.Provider value={{...user, userData: {...userData}}}>
                 <div className="App">
                     <ThemeProvider theme={darkTheme}>
                         <Navbar user={user} isAdmin={userData.admin} />
@@ -110,6 +110,10 @@ const AppLoggedIn = ({ user }) => {
                                 path="/predictions"
                                 component={Predictions}
                             />
+                            <Route
+                                exact
+                                path="/predictions/private"
+                                render={() => <Predictions type="private" />} />
                             <Route
                                 exact
                                 path="/leaderboard"

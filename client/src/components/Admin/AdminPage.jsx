@@ -37,10 +37,10 @@ function AdminPageContent(props) {
     // const [data, load, e2] = useDocumentData(checkAdmin);
 
     const user = useContext(UserContext);
-    console.log(user)
+    // console.log(user)
     const [tabIndex, setTabIndex] = React.useState(0);
 
-    if (user.admin === false) {
+    if (user.userData.admin === false) {
         return <div>You are not an admin!</div>;
     }
 

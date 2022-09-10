@@ -12,6 +12,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useContext } from "react";
+import { UserContext } from "../Providers/UserContext";
 const pages = ["Predictions", "Leaderboard", "Forum"];
 
 export default class navbar extends Component {
@@ -171,6 +173,7 @@ export default class navbar extends Component {
 const LoginButton = (props) => {
     const [loginEl, setLoginEl] = React.useState(null);
     const open = Boolean(loginEl);
+    const { userData } = useContext(UserContext);
 
     const [user] = useAuthState(app.auth);
     const handleClick = (event) => {
@@ -213,16 +216,27 @@ const LoginButton = (props) => {
                     >
                         Profile
                     </MenuItem>
-                    {props.isAdmin ? 
-                    (<MenuItem
-                        onClick={handleClose}
-                        component={Link}
-                        id="admin"
-                        to={`/admin`}
-                    >
-                        Admin Panel
-                    </MenuItem>) : null}
-
+                    {userData.admin ? (
+                        <MenuItem
+                            onClick={handleClose}
+                            component={Link}
+                            id="admin"
+                            to={`/admin`}
+                        >
+                            Admin Panel
+                        </MenuItem>
+                    ) : null}
+                    {userData.private ? (
+                        <MenuItem
+                            onClick={handleClose}
+                            component={Link}
+                            id="private"
+                            to={`/predictions/private`}
+                        >
+                        Private Predictions
+                        </MenuItem>
+                    ) : null}
+                    
                     <MenuItem onClick={handleClose} id="logout">
                         Logout
                     </MenuItem>
