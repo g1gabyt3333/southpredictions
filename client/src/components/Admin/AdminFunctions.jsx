@@ -45,9 +45,11 @@ export default function AdminFunctions() {
     };
 
     const debug = async() => {
-        let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
-        let userArray = await getCollectionTemplate();
-        console.log(userArray)
+        // let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
+        // let userArray = await getCollectionTemplate();
+        // console.log(userArray)
+
+       
     }
     // const [state, dispatch] = React.useReducer(reducer, {});
     return (

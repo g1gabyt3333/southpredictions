@@ -3,7 +3,6 @@ import * as app from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Box, Tabs, Tab} from "@mui/material";
 import {
-    useDocumentData,
     useCollectionData,
 } from "react-firebase-hooks/firestore";
 import { UserContext } from "../../Providers/UserContext";
