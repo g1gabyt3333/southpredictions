@@ -6,7 +6,7 @@ import { db } from "../../firebase";
 
 export default function AdminPrediction({data, type}) {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
-    const path = type === "private" ? "private-predictions" : "predictions";
+    const path = type === "private" ? "privatePredictions" : "predictions";
     const setVote = async(e) => {
         
         const ref = db.collection(path).doc(data.id);
