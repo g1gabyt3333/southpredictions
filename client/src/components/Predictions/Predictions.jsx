@@ -6,7 +6,7 @@ import Prediction from "./Prediction";
 import TabBar from "./TabBar";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-export default function Predictions({type}) {
+export default function Predictions({ type }) {
     const [user, loading, error] = useAuthState(app.auth);
     const [openError, setOpenError] = React.useState(false);
     const [filterType, setFilterType] = React.useState(0); // 0 = pending, 1 = completed, 2= all
@@ -21,25 +21,36 @@ export default function Predictions({type}) {
         return <div> You must be signed in to view page! </div>;
     }
 
-    if (loading || load) {
-        return <div>Loading...</div>;
-    }
-
     const handleClose = () => {
         setOpenError(false);
     };
 
     const handleFilter = (e, newValue) => {
         setFilterType(newValue);
+    };
+
+    if (loading || load) {
+        return (
+            <Container
+                maxWidth="xl"
+                sx={{
+                    marginTop: "6vh",
+                    display: "flex",
+                    flexDirection: "column",
+                    rowGap: "20px",
+                }}
+            >
+                <TabBar handleFilter={handleFilter} filter={filterType} />
+                <div> Loading... </div>
+            </Container>
+        );
     }
     let filter = [];
-    if(filterType === 0) {
-        filter = values.filter(value => value.isCompleted === false);
-    } 
-    else if(filterType === 1) {
-        filter = values.filter(value => value.isCompleted === true);
-    }
-    else {
+    if (filterType === 0) {
+        filter = values.filter((value) => value.isCompleted === false);
+    } else if (filterType === 1) {
+        filter = values.filter((value) => value.isCompleted === true);
+    } else {
         filter = values;
     }
     return (
@@ -52,11 +63,20 @@ export default function Predictions({type}) {
                 rowGap: "20px",
             }}
         >
-            <TabBar handleFilter={handleFilter} filter={filterType}/>
+            <TabBar handleFilter={handleFilter} filter={filterType} />
             {filter.map((prediction) => (
-                <Prediction key={prediction.id} data={prediction} user={user} e={setOpenError}/>
+                <Prediction
+                    key={prediction.id}
+                    data={prediction}
+                    user={user}
+                    e={setOpenError}
+                />
             ))}
-            <Snackbar open={openError} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar
+                open={openError}
+                autoHideDuration={6000}
+                onClose={handleClose}
+            >
                 <Alert
                     onClose={handleClose}
                     severity="error"

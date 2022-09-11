@@ -9,6 +9,8 @@ import {
     Chip,
     Divider,
     Box,
+    FormControlLabel,
+    Switch
 } from "@mui/material";
 import * as app from "../../firebase";
 import { serverTimestamp } from "firebase/firestore";
@@ -38,6 +40,11 @@ const reducer = (state, action) => {
                     (option, index) => option !== action.payload
                 ),
             };
+        case "togglePrivate": 
+            return {
+                ...state,
+                private: !state.private
+            }
 
         // case "addOptionField":
 
@@ -85,12 +92,13 @@ export default function AddPrediction() {
         prediction: "",
         options: [],
         option: "",
+        private: false,
     });
     
 
     const handleSubmit = async () => {
         console.log(state);
-        const ref = app.db.collection("/predictions")
+        const ref = app.db.collection(state.private ? "/privatePredictions" : "/predictions");
         let resultsT = {};
         state.options.forEach((option) => {
             resultsT[option] = 0;
@@ -182,6 +190,9 @@ export default function AddPrediction() {
                     >
                         Reset
                     </Button>
+                    <FormControlLabel control={<Switch checked={state.private} onChange={() => {
+                        dispatch({type: "togglePrivate"})
+                    }} defaultChecked />} label="Private?" />
             </Box>
             <Divider sx={{ marginTop: "15px", marginBottom: "" }} />
             {state.prediction !== "" ? <PredictionPreview data={{ ...state }} />  : ""}

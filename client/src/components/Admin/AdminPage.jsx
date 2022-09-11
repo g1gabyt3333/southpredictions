@@ -44,7 +44,7 @@ function AdminPageContent(props) {
         return <div>You are not an admin!</div>;
     }
 
-    const switchComponent = (tabIndex) => {
+    const SwitchComponent = ({tabIndex}) => {
         switch (tabIndex) {
             case 0:
                 return <Predictions />;
@@ -85,8 +85,7 @@ function AdminPageContent(props) {
                     <Tab label="Add a prediction" />
                 </Tabs>
             </Box>
-
-            {switchComponent(tabIndex)}
+            <SwitchComponent tabIndex={tabIndex}/>
         </Container>
     );
 }
