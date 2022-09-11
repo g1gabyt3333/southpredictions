@@ -1,7 +1,6 @@
 import React, {useEffect, useContext } from "react";
 import * as app from "../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Container, Box, Tabs, Tab} from "@mui/material";
+import { Container,Box, Tabs, Tab} from "@mui/material";
 import {
     useCollectionData,
 } from "react-firebase-hooks/firestore";
@@ -11,22 +10,14 @@ import AdminFunctions from "./AdminFunctions";
 import AddPrediction from "./AddPrediction";
 
 function AdminPage() {
-    const [user, loading, error] = useAuthState(app.auth);
-
+    
     useEffect(() => {
         document.title = "Admin Page";
     }, []);
 
-    if (error || user === null) {
-        return <div> You must be signed in to view page! </div>;
-    } else if (loading) {
-        return <div>Loading...</div>;
-    } else {
-        
-        
-
-        return <AdminPageContent user={user} />;
-    }
+    
+        return <AdminPageContent/>;
+    
 }
 
 
