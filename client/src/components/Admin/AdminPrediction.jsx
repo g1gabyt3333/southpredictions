@@ -4,11 +4,12 @@ import { db } from "../../firebase";
 
 
 
-export default function AdminPrediction({data}) {
+export default function AdminPrediction({data, type}) {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
+    const path = type === "private" ? "private-predictions" : "predictions";
     const setVote = async(e) => {
         
-        const ref = db.collection("/predictions").doc(data.id);
+        const ref = db.collection(path).doc(data.id);
         await ref.update({
             answer: e.target.innerText,
             isCompleted: true,
@@ -18,7 +19,7 @@ export default function AdminPrediction({data}) {
     }
 
     const changeState = async(e) => {
-        const ref = db.collection("/predictions").doc(data.id);
+        const ref = db.collection(path).doc(data.id);
         if(data.isCompleted === "awaiting") {
             await ref.update({isCompleted: false})
         }
@@ -31,7 +32,7 @@ export default function AdminPrediction({data}) {
     }
 
     const removePrediction = async(e) => {
-        const ref = db.collection("/predictions").doc(data.id);
+        const ref = db.collection(path).doc(data.id);
         await ref.delete();
     }
 

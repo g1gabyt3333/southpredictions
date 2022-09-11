@@ -48,9 +48,14 @@ function AdminPageContent(props) {
         switch (tabIndex) {
             case 0:
                 return <Predictions />;
-            case 1:
-                return <AdminFunctions />;
+            case 1: 
+                if(user.userData.private === false) {
+                    return <div>You can't access this page!</div>
+                }
+                return <Predictions type="private" />;
             case 2:
+                return <AdminFunctions />;
+            case 3:
                 return <AddPrediction />;
             default:
                 return <div>Item One</div>;
@@ -81,6 +86,7 @@ function AdminPageContent(props) {
                     allowScrollButtonsMobile
                 >
                     <Tab label="Open Predictions" />
+                    <Tab label="Private Predictions" />
                     <Tab label="Admin Functions" />
                     <Tab label="Add a prediction" />
                 </Tabs>
@@ -90,13 +96,15 @@ function AdminPageContent(props) {
     );
 }
 
-const Predictions = (props) => {
+const Predictions = ({type}) => {
     const predQuery = app.db
-        .collection("/predictions")
+        .collection(type === "private" ? "/privatePredictions" : "/predictions")
         .where("isCompleted", "!=", true);
     const [predictions, load] = useCollectionData(predQuery, {
         idField: "id",
     });
+
+
 
     // console.log(predictions);
 
@@ -106,7 +114,7 @@ const Predictions = (props) => {
     return (
         <>
             {predictions.map((prediction) => (
-                <AdminPrediction key={prediction.id} data={prediction} />
+                <AdminPrediction key={prediction.id} data={prediction} type={type}/>
             ))}
         </>
     );

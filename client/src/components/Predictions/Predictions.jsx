@@ -1,13 +1,11 @@
 import React from "react";
 import * as app from "../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { Container, Snackbar, Alert } from "@mui/material";
 import Prediction from "./Prediction";
 import TabBar from "./TabBar";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export default function Predictions({ type }) {
-    const [user, loading, error] = useAuthState(app.auth);
     const [openError, setOpenError] = React.useState(false);
     const [filterType, setFilterType] = React.useState(0); // 0 = pending, 1 = completed, 2= all
     const query = app.db
@@ -17,7 +15,7 @@ export default function Predictions({ type }) {
         idField: "id",
     });
 
-    if (!user || error || e) {
+    if (e) {
         return <div> You must be signed in to view page! </div>;
     }
 
@@ -29,7 +27,7 @@ export default function Predictions({ type }) {
         setFilterType(newValue);
     };
 
-    if (loading || load) {
+    if (load) {
         return (
             <Container
                 maxWidth="xl"
@@ -68,8 +66,8 @@ export default function Predictions({ type }) {
                 <Prediction
                     key={prediction.id}
                     data={prediction}
-                    user={user}
                     e={setOpenError}
+                    type={type}
                 />
             ))}
             <Snackbar

@@ -4,29 +4,29 @@ import { useDocumentData } from "react-firebase-hooks/firestore";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Typography from "@mui/material/Typography";
 import { Chip} from "@mui/material";
 import Results from "./Results";
 import { Divider } from "@mui/material";
+import { UserContext } from "../../Providers/UserContext";
 
 export default function Prediction(props) {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
-
-    const [user] = useAuthState(app.auth);
+    const priv = props.type === "private" ? "/privatePredictions" : "/predictions"
+    const {userData} = React.useContext(UserContext);
     const query = app.db
-        .collection("/predictions")
+        .collection(priv)
         .doc(props.data.id)
         .collection("/votes")
-        .doc(user.uid);
+        .doc(userData.uid);
     const [value] = useDocumentData(query, { idField: "id" });
 
     const addVote = (e) => {
         const ref = app.db
-            .collection("/predictions")
+            .collection(priv)
             .doc(props.data.id)
             .collection("/votes")
-            .doc(user.uid);
+            .doc(userData.uid);
 
         ref.set({
             vote: e.target.innerText,
@@ -35,6 +35,7 @@ export default function Prediction(props) {
                 console.log("Document successfully written!");
             })
             .catch((error) => {
+                console.error("Error writing document: ", error);
                 props.e(true);
             });
     };

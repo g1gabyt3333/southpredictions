@@ -192,7 +192,7 @@ export default function AddPrediction() {
                     </Button>
                     <FormControlLabel control={<Switch checked={state.private} onChange={() => {
                         dispatch({type: "togglePrivate"})
-                    }} defaultChecked />} label="Private?" />
+                    }}  />} label="Private?" />
             </Box>
             <Divider sx={{ marginTop: "15px", marginBottom: "" }} />
             {state.prediction !== "" ? <PredictionPreview data={{ ...state }} />  : ""}
