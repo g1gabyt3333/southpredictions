@@ -14,7 +14,7 @@ import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
 import { UserContext } from "../Providers/UserContext";
-const pages = ["Predictions", "Leaderboard", "Forum"];
+const pages = ["Predictions", "Leaderboard"];
 
 export default class navbar extends Component {
     constructor(props) {
@@ -212,7 +212,7 @@ const LoginButton = (props) => {
                         onClick={handleClose}
                         component={Link}
                         id="profile"
-                        to={`/profile/${user.uid}`}
+                        to={`/profile/`}
                     >
                         Profile
                     </MenuItem>

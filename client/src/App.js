@@ -8,7 +8,7 @@ import { Switch, Route } from "react-router-dom";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
-import Profile from "./components/Profile";
+import Profile from "./components/Profile/Profile";
 import ForumPost from "./components/ForumPost";
 import AdminPage from "./components/Admin/AdminPage";
 import { Box } from "@mui/system";
@@ -127,6 +127,7 @@ const AppLoggedIn = ({ user }) => {
                                 )}
                             />
                             <Route exact path="/forum" component={Forum} />
+                            <Route exact path="/profile" component={Profile} />
                             <Route
                                 path={"/profile/:id"}
                                 render={(props) => (
