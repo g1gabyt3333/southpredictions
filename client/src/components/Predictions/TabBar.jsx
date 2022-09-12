@@ -19,6 +19,7 @@ export default function TabBar({handleFilter, filter}) {
                 allowScrollButtonsMobile
             >
                 <Tab label="Open Predictions" />
+                <Tab label="Awaiting Results" />
                 <Tab label="Finished Predictions" />
                 <Tab label="All Predictions" />
             </Tabs>

@@ -19,6 +19,21 @@ exports.changeTally = functions.firestore
         functions.logger.log("Changing tally for", predictionId, "by 1");
     });
 
+exports.changeTallyPrivate = functions.firestore
+    .document("privatePredictions/{predictionId}/votes/{voteId}")
+    .onCreate(async function (snap, context) {
+        const data = snap.data();
+        const predictionId = context.params.predictionId;
+        
+
+        const predictionRef = db.collection("privatePredictions").doc(predictionId);
+        const prediction = await predictionRef.get();
+        let predictionData = prediction.data();
+        predictionData.results[data.vote]++;
+        await predictionRef.update(predictionData);
+
+        functions.logger.log("Changing tally for", predictionId, "by 1");
+    });
 exports.createUser = functions.auth.user().onCreate(async function (user) {
     if (user.email.split("@")[1] !== "wwprsd.org") {
         functions.logger.log("User not from WWPRSD, not creating account");
@@ -44,28 +59,30 @@ exports.getUsers = functions.https.onCall((data, context) => {
 });
 
 exports.getLeaderboard = functions.https.onCall(async function (data, context) {
-
-    if(!context.auth || context.auth.token.email.split("@")[1] !== "wwprsd.org") {
+    if (
+        !context.auth ||
+        context.auth.token.email.split("@")[1] !== "wwprsd.org"
+    ) {
         return {
-            error: "You are not authorized to do this"
-        }
+            error: "You are not authorized to do this",
+        };
     }
     const db = admin.firestore();
-    const users = db.collection("user").orderBy("predictions.wins", "desc").limit(10);
+    const users = db
+        .collection("user")
+        .orderBy("predictions.wins", "desc")
+        .limit(10);
 
-    const lbData =  (await users.get()).docs;
-    const leaderboard = lbData.map(doc => {
+    const lbData = (await users.get()).docs;
+    const leaderboard = lbData.map((doc) => {
         return {
             name: doc.data().name,
             wins: doc.data().predictions.wins,
             losses: doc.data().predictions.losses,
-        }
-    })
-
+        };
+    });
 
     return leaderboard;
-
-
 });
 
 exports.processPrediction = functions.firestore
