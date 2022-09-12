@@ -45,7 +45,7 @@ exports.createUser = functions.auth.user().onCreate(async function (user) {
             name: user.displayName,
             uid: user.uid,
             admin: false,
-            private: true,
+            private: false,
             predictions: {
                 wins: 0,
                 losses: 0,
