@@ -49,7 +49,11 @@ export default function AdminFunctions() {
         // let userArray = await getCollectionTemplate();
         // console.log(userArray)
 
-       
+        const getUser = app.functions.httpsCallable("getUser")
+        let {data} = await getUser({userId: "J5KxihjeU1aqKNDLmkZgKHOe11b2"})
+        console.log(data)
+
+        
     }
     // const [state, dispatch] = React.useReducer(reducer, {});
     return (

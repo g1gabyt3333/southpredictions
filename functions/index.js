@@ -63,9 +63,7 @@ exports.getLeaderboard = functions.https.onCall(async function (data, context) {
         !context.auth ||
         context.auth.token.email.split("@")[1] !== "wwprsd.org"
     ) {
-        return {
-            error: "You are not authorized to do this",
-        };
+        throw new functions.https.HttpsError("permission-denied", "You do not have access to this resource")
     }
     const db = admin.firestore();
     const users = db
@@ -143,6 +141,29 @@ exports.processPrediction = functions.firestore
 
         return userPredictions;
     });
+
+exports.getUser = functions.https.onCall(async function (data, context) {
+
+    if(context.auth.token.email.split("@")[1] !== "wwprsd.org")  {
+        throw new functions.https.HttpsError("permission-denied", "You do not have access to this resource")
+    }
+    const {userId} = data;
+
+    const userData = (await db.collection("/user").doc(userId).get()).data();
+
+    if(userData === undefined) {
+        throw new functions.https.HttpsError("not-found", "The user was not found in the database;")
+    }
+
+
+    return {
+        admin: userData.admin,
+        email: userData.email,
+        name: userData.name,
+        predictions: userData.predictions
+    }
+    
+})
 
 exports.docTemplate = functions.https.onCall(async function (data, context) {
     let data2 = await db.collection("/predictions").get();
