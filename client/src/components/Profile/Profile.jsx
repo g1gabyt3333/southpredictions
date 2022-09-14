@@ -6,7 +6,8 @@ import {
     Typography,
     CircularProgress,
     Box,
-    Alert
+    Alert,
+    Chip,
 } from "@mui/material";
 import { UserContext } from "../../Providers/UserContext";
 
@@ -32,99 +33,74 @@ const ProfileLayout = ({ userData }) => {
                     <Card sx={{ textAlign: "center", borderRadius: "20px" }}>
                         <Grid container direction="row" alignItems="center">
                             <Grid item lg={4}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        minHeight: "200px",
-                                        maxHeight: "200px",
-                                        alignSelf: "center",
-                                        justifyContent: "center",
-                                        borderRight: "2px solid gray",
-                                    }}
-                                >
-                                    <Typography
-                                        variant="h4"
-                                        component="h1"
-                                        sx={{
-                                            alignSelf: "center",
-                                            padding: "4rem",
-                                        }}
-                                    >
-                                        {userData.name}
-                                    </Typography>
-                                </Box>
+                                <HeadingGrid text={userData.name} color="white">
+                                    {userData.admin ? (
+                                        <Chip
+                                            label="Admin"
+                                            color="error"
+                                            sx={{ alignSelf: "center" }}
+                                        />
+                                    ) : null}
+                                </HeadingGrid>
                             </Grid>
                             <Grid item lg={4}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        minHeight: "200px",
-                                        maxHeight: "200px",
-                                        alignSelf: "center",
-                                        justifyContent: "center",
-                                        borderRight: "2px solid gray",
-                                    }}
-                                >
-                                    <Typography
-                                        variant="h4"
-                                        component="h1"
-                                        sx={{
-                                            alignSelf: "center",
-                                            padding: "4rem",
-                                        }}
-                                    >
-                                        {userData.predictions.wins}
-                                        <Typography
-                                            variant="h6"
-                                            component="span"
-                                            sx={{
-                                                color: "lightgreen",
-                                                display: "block",
-                                            }}
-                                        >
-                                            Correct
-                                        </Typography>
-                                    </Typography>
-                                </Box>
+                                <HeadingGrid
+                                    text={userData.predictions.wins}
+                                    bottomText="Correct"
+                                    color="lightgreen"
+                                />
                             </Grid>
                             <Grid item lg={4}>
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        minHeight: "200px",
-                                        maxHeight: "200px",
-                                        alignSelf: "center",
-                                        justifyContent: "center",
-                                        
-                                    }}
-                                >
-                                    <Typography
-                                        variant="h4"
-                                        component="h1"
-                                        sx={{
-                                            alignSelf: "center",
-                                            padding: "4rem",
-                                        }}
-                                    >
-                                        {userData.predictions.losses}
-                                        <Typography
-                                            variant="h6"
-                                            component="span"
-                                            sx={{
-                                                color: "salmon",
-                                                display: "block",
-                                            }}
-                                        >
-                                            Wrong
-                                        </Typography>
-                                    </Typography>
-                                </Box>
+                                <HeadingGrid
+                                    text={userData.predictions.wins}
+                                    bottomText="Incorrect"
+                                    color="salmon"
+                                    noBorder
+                                />
                             </Grid>
                         </Grid>
                     </Card>
                 </Grid>
             </Grid>
         </Container>
+    );
+};
+
+const HeadingGrid = ({ text, bottomText, color, children, noBorder }) => {
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                minHeight: "200px",
+                maxHeight: "200px",
+                alignSelf: "center",
+                justifyContent: "center",
+                borderRight: noBorder ? "none" : "1px solid #e0e0e0",
+            }}
+        >
+            <Typography
+                variant="h4"
+                component="h1"
+                sx={{
+                    alignSelf: "center",
+                    padding: "1rem",
+                }}
+            >
+                {text}
+
+                <Typography
+                    variant="h6"
+                    component="span"
+                    sx={{
+                        color: color,
+                        display: "block",
+                    }}
+                >
+                    {bottomText}
+                </Typography>
+            </Typography>
+            {children}
+        </Box>
     );
 };
 
@@ -153,9 +129,7 @@ const NProfile = ({ userId }) => {
     }
 
     if (error) {
-        return (
-            <Alert severity="error">User not found</Alert>
-        );
+        return <Alert severity="error">User not found</Alert>;
     }
     return <ProfileLayout userData={userData} />;
 };
