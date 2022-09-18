@@ -75,6 +75,7 @@ exports.getLeaderboard = functions.https.onCall(async function (data, context) {
     const leaderboard = lbData.map((doc) => {
         return {
             name: doc.data().name,
+            id: doc.data().uid,
             wins: doc.data().predictions.wins,
             losses: doc.data().predictions.losses,
         };
