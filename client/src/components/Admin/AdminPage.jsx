@@ -91,14 +91,16 @@ const Predictions = ({type}) => {
     const predQuery = app.db
         .collection(type === "private" ? "/privatePredictions" : "/predictions")
         .where("isCompleted", "!=", true);
-    const [predictions, load] = useCollectionData(predQuery, {
+    const [predictions, load, error] = useCollectionData(predQuery, {
         idField: "id",
     });
 
 
 
     // console.log(predictions);
-
+    if(error) {
+        return <div> You do not have access to this page! </div>;
+    }
     if (load) {
         return <div>Loading...</div>;
     }

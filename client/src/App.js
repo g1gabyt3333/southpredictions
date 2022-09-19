@@ -7,12 +7,12 @@ import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import Profile from "./components/Profile/Profile";
 import ForumPost from "./components/ForumPost";
 import AdminPage from "./components/Admin/AdminPage";
 import { Box } from "@mui/system";
-
+import {green} from "@mui/material/colors";
 import * as app from "./firebase";
 import Forum from "./components/Forum";
 import { CircularProgress } from "@mui/material";
@@ -25,7 +25,12 @@ const darkTheme = createTheme({
         background: {
             default: "#333333",
         },
+        success: {
+            main: green[500],
+            dark: green[500]
+        }
     },
+    
     //make buttons use light theme
 });
 
@@ -85,7 +90,7 @@ const NotFound = () => {
 
 const AppLoggedIn = ({ user }) => {
     const query = app.db.collection("/user").doc(user.uid);
-    const [userData, loading, error] = useDocumentDataOnce(query);
+    const [userData, loading, error] = useDocumentData(query);
 
     if (loading) {
         return <Loading />;

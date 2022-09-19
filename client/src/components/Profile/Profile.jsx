@@ -8,14 +8,17 @@ import {
     Box,
     Alert,
     Chip,
+    CardActionArea,
+    Tooltip,
+    Snackbar
 } from "@mui/material";
 import { UserContext } from "../../Providers/UserContext";
 
 import * as app from "../../firebase";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 
 export default function Profile({ userId }) {
-    const { userData } = React.useContext(UserContext);
+    const { userData } = useContext(UserContext);
 
     if (!userId) {
         //load your cached stats from your profile
@@ -26,13 +29,51 @@ export default function Profile({ userId }) {
 }
 
 const ProfileLayout = ({ userData }) => {
+    const [copied, setCopied] = React.useState(false);
+
     return (
-        <Container maxWidth="xl" sx={{ marginTop: "10vh" }}>
-            <Grid container>
-                <Grid item lg={12} md={8} sm={6} xs={4}>
-                    <Card sx={{ textAlign: "center", borderRadius: "20px" }}>
-                        <Grid container direction="row" alignItems="center">
-                            <Grid item lg={4}>
+        <>
+            <Container maxWidth="xl" sx={{ marginTop: "10vh" }}>
+                <Grid container>
+                    <ProfileHeader userData={userData} setCopied={setCopied} />
+                </Grid>
+            </Container>
+            {
+                copied ?
+                    <Snackbar
+                        open={copied}
+                        autoHideDuration={6000}
+                        onClose={() => setCopied(false)}
+
+                    >
+                        <Alert severity="success" sx={{ width: '100%' }}>
+                            Copied to clipboard!
+                        </Alert>
+                    </Snackbar>
+                    : null
+            }
+        </>
+    );
+};
+
+const ProfileHeader = ({ userData, setCopied }) => {
+    return (
+        <Grid item sm={12}>
+            <Card sx={{ textAlign: "center", borderRadius: "20px" }}>
+                <Grid container direction="row" alignItems="center">
+                    <Grid item md={4} xs={12}>
+                        <Tooltip
+                            placement="top"
+                            title="Click to copy profile id"
+                        >
+                            <CardActionArea
+                                onClick={() => {
+                                    navigator.clipboard.writeText(
+                                        userData.uid
+                                    );
+                                    setCopied(true);
+                                }}
+                            >
                                 <HeadingGrid text={userData.name} color="white">
                                     {userData.admin ? (
                                         <Chip
@@ -42,27 +83,27 @@ const ProfileLayout = ({ userData }) => {
                                         />
                                     ) : null}
                                 </HeadingGrid>
-                            </Grid>
-                            <Grid item lg={4}>
-                                <HeadingGrid
-                                    text={userData.predictions.wins}
-                                    bottomText="Correct"
-                                    color="lightgreen"
-                                />
-                            </Grid>
-                            <Grid item lg={4}>
-                                <HeadingGrid
-                                    text={userData.predictions.wins}
-                                    bottomText="Incorrect"
-                                    color="salmon"
-                                    noBorder
-                                />
-                            </Grid>
-                        </Grid>
-                    </Card>
+                            </CardActionArea>
+                        </Tooltip>
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                        <HeadingGrid
+                            text={userData.predictions.wins}
+                            bottomText="Correct"
+                            color="lightgreen"
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12}>
+                        <HeadingGrid
+                            text={userData.predictions.wins}
+                            bottomText="Incorrect"
+                            color="salmon"
+                            noBorder
+                        />
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Container>
+            </Card>
+        </Grid>
     );
 };
 
@@ -75,7 +116,14 @@ const HeadingGrid = ({ text, bottomText, color, children, noBorder }) => {
                 maxHeight: "200px",
                 alignSelf: "center",
                 justifyContent: "center",
-                borderRight: noBorder ? "none" : "1px solid #e0e0e0",
+                borderRight: {
+                    xs: "none",
+                    md: noBorder ? "none" : "1px solid #e0e0e0",
+                },
+                borderBottom: {
+                    md: "none",
+                    xs: noBorder ? "none" : "1px solid #e0e0e0",
+                },
             }}
         >
             <Typography
@@ -115,7 +163,7 @@ const NProfile = ({ userId }) => {
     useEffect(() => {
         getUser({ userId: userId })
             .then((data) => {
-                setUserData(data.data);
+                setUserData({...data.data, uid: userId});
                 setLoading(false);
             })
             .catch((e) => {
