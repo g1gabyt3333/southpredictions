@@ -10,7 +10,7 @@ import {
     Divider,
     Box,
     FormControlLabel,
-    Switch
+    Switch,
 } from "@mui/material";
 import * as app from "../../firebase";
 import { serverTimestamp } from "firebase/firestore";
@@ -40,11 +40,11 @@ const reducer = (state, action) => {
                     (option, index) => option !== action.payload
                 ),
             };
-        case "togglePrivate": 
+        case "togglePrivate":
             return {
                 ...state,
-                private: !state.private
-            }
+                private: !state.private,
+            };
 
         // case "addOptionField":
 
@@ -67,7 +67,7 @@ const reducer = (state, action) => {
 const PredictionPreview = ({ data }) => {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
     return (
-        <Card sx={{ minWidth: 275, marginBottom: "15px" }}>
+        <Card sx={{ minWidth: 275, my: "30px"}}>
             <CardContent>
                 <Typography variant="h5" component="div">
                     {data.prediction}
@@ -94,16 +94,20 @@ export default function AddPrediction() {
         option: "",
         private: false,
     });
-    
 
     const handleSubmit = async () => {
         console.log(state);
-        const ref = app.db.collection(state.private ? "/privatePredictions" : "/predictions");
+        const ref = app.db.collection(
+            state.private ? "/privatePredictions" : "/predictions"
+        );
         let resultsT = {};
         state.options.forEach((option) => {
+            if (option === "") {
+                return;
+            }
             resultsT[option] = 0;
-        })
-        if(state.options.length < 2 ||  state.prediction === "") {
+        });
+        if (state.options.length < 2 || state.prediction === "") {
             console.log("Error");
             return;
         }
@@ -112,11 +116,10 @@ export default function AddPrediction() {
             isCompleted: false,
             options: state.options,
             prediction: state.prediction,
-            results: resultsT
-        })
+            results: resultsT,
+        });
         dispatch({ type: "reset" });
-        
-    }
+    };
 
     // const inputs = () => {
     //     let t = 1;
@@ -136,66 +139,84 @@ export default function AddPrediction() {
                 }}
                 component="form"
             >
-                
-                    <TextField
-                        label="Prediction"
-                        value={state.prediction}
-                        onChange={(e) =>
-                            dispatch({
-                                type: "predictionInput",
-                                payload: e.target.value,
-                            })
-                        }
-                    />
+                <TextField
+                    label="Prediction"
+                    value={state.prediction}
+                    onChange={(e) =>
+                        dispatch({
+                            type: "predictionInput",
+                            payload: e.target.value,
+                        })
+                    }
+                />
 
-                    <TextField
-                        label="Option"
-                        value={state.option}
-                        onChange={(e) =>
-                            dispatch({
-                                type: "optionInput",
-                                payload: e.target.value,
-                            })
-                        }
-                    />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
+                <TextField
+                    label="Option"
+                    value={state.option}
+                    onChange={(e) => {
+                        dispatch({
+                            type: "optionInput",
+                            payload: e.target.value,
+                        });
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
                             dispatch({
                                 type: "addOptionInput",
                             });
-                        }}
-                        sx={{ minHeight: "56px", maxWidth: "18.5ch"}}
-                    >
-                        Add Option
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleSubmit}
-                        sx={{ minHeight: "56px", maxWidth: "18.5ch"}}
-                    >
-                        Submit
-                    </Button>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => {
-                            dispatch({
-                                type: "reset",
-                            });
-                        }}
-                        sx={{minHeight: "56px", maxWidth: "18.5ch"}}
-                    >
-                        Reset
-                    </Button>
-                    <FormControlLabel control={<Switch checked={state.private} onChange={() => {
-                        dispatch({type: "togglePrivate"})
-                    }}  />} label="Private?" />
+                        }
+                    }}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        dispatch({
+                            type: "addOptionInput",
+                        });
+                    }}
+                    sx={{ minHeight: "56px", maxWidth: "18.5ch" }}
+                >
+                    Add Option
+                </Button>
+                <Button
+                    variant="contained"
+                    color="success"
+                    onClick={handleSubmit}
+                    sx={{ minHeight: "56px", maxWidth: "18.5ch" }}
+                >
+                    Submit
+                </Button>
+                <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => {
+                        dispatch({
+                            type: "reset",
+                        });
+                    }}
+                    sx={{ minHeight: "56px", maxWidth: "18.5ch" }}
+                >
+                    Reset
+                </Button>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={state.private}
+                            onChange={() => {
+                                dispatch({ type: "togglePrivate" });
+                            }}
+                        />
+                    }
+                    label="Private?"
+                />
             </Box>
             <Divider sx={{ marginTop: "15px", marginBottom: "" }} />
-            {state.prediction !== "" ? <PredictionPreview data={{ ...state }} />  : ""}
+            {state.prediction !== "" ? (
+                <PredictionPreview data={{ ...state }} />
+            ) : (
+                ""
+            )}
         </>
     );
 }
