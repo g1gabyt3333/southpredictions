@@ -1,10 +1,7 @@
 import React from "react";
 import * as app from "../../firebase";
 import { serverTimestamp } from "firebase/firestore";
-import { Button} from "@mui/material";
-
-
-
+import { Button } from "@mui/material";
 
 // const setUsers = async() => {
 //     let makeUser = app.functions.httpsCallable("makeUser");
@@ -28,10 +25,8 @@ import { Button} from "@mui/material";
 //     })
 // }
 
-
-
 export default function AdminFunctions() {
-    const addNewPrediction = async() => {
+    const addNewPrediction = async () => {
         await app.db.collection("/privatePredictions").add({
             dateCreated: serverTimestamp(),
             isCompleted: false,
@@ -44,22 +39,48 @@ export default function AdminFunctions() {
         });
     };
 
-    const debug = async() => {
-        // let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
-        // let userArray = await getCollectionTemplate();
-        // console.log(userArray)
+    const debug = async () => {
+        // async function docTemplate() {
+        //     let getCollectionTemplate = app.functions.httpsCallable("docTemplate");
+        //     let userArray = await getCollectionTemplate();
+        //     console.log(userArray);
+        // }
 
-        const getUser = app.functions.httpsCallable("getUser")
-        let {data} = await getUser({userId: "J5KxihjeU1aqKNDLmkZgKHOe11b2"})
-        console.log(data)
+        // async function getUserTest() {
+        //     const getUser = app.functions.httpsCallable("getUser");
+        //     let { data } = await getUser({ userId: "J5KxihjeU1aqKNDLmkZgKHOe11b2" });
+        //     console.log(data);
+        // }
 
-        
-    }
+        // const uq = app.db.collection("/user");
+        // let arr = [];
+        // uq.get().then((data) => {
+        //     data.docs.forEach((doc) => {
+        //         const query = app.db.collection("/user").doc(doc.id);
+
+        //         query.update({
+        //             predictions: {
+        //                 wins: 0,
+        //                 losses: 0
+        //             }
+        //         })
+        //         .then(
+        //             (data) => {
+        //                 console.log(data)
+        //             }
+        //         )
+        //     });
+        // });
+    };
     // const [state, dispatch] = React.useReducer(reducer, {});
     return (
         <>
-            <Button variant="contained" onClick={addNewPrediction}>Add a temp prediction</Button>
-            <Button variant="contained" onClick={debug}>Debug</Button>
+            <Button variant="contained" onClick={addNewPrediction}>
+                Add a temp prediction
+            </Button>
+            <Button variant="contained" onClick={debug}>
+                Debug
+            </Button>
         </>
     );
 }

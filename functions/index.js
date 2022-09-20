@@ -50,6 +50,7 @@ exports.createUser = functions.auth.user().onCreate(async function (user) {
                 wins: 0,
                 losses: 0,
             },
+            createdAccount: new Date()
         });
     }
 });
