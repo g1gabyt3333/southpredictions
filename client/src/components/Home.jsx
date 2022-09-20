@@ -28,6 +28,7 @@ export default class Home extends Component {
                         <HomeMsg
                             signIn={app.signIn}
                             user={this.props.user}
+                            creatingUser={this.props.creatingUser}
                         />
                     </Grid>
                 </Grid>
@@ -37,15 +38,21 @@ export default class Home extends Component {
 }
 
 const HomeMsg = (props) => {
+    if(props.creatingUser) {
+        return <Typography variant="h6">Creating User...</Typography>
+    }
     if (props.user) {
         return <Typography variant="h6">{props.user.displayName}!</Typography>;
     }
+
+
+
     return (
         <Button
             onClick={app.signIn}
             variant="contained"
         >
-            Login
+            Login / SignUp
         </Button>
     );
 };

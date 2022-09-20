@@ -10,7 +10,7 @@ import Results from "./Results";
 import { Divider } from "@mui/material";
 import { UserContext } from "../../Providers/UserContext";
 
-export default function Prediction(props) {
+function Prediction(props) {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
     const priv = props.type === "private" ? "/privatePredictions" : "/predictions"
     const {userData} = React.useContext(UserContext);
@@ -98,3 +98,5 @@ export default function Prediction(props) {
         </Card>
     );
 }
+
+export default React.memo(Prediction)

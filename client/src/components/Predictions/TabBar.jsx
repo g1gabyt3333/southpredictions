@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Tabs, Tab } from "@mui/material";
 
-export default function TabBar({handleFilter, filter}) {
+function TabBar({handleFilter, filter}) {
     return (
         <Box
             sx={{
@@ -26,3 +26,5 @@ export default function TabBar({handleFilter, filter}) {
         </Box>
     );
 }
+
+export default React.memo(TabBar)

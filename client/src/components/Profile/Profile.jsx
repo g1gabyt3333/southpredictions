@@ -10,9 +10,10 @@ import {
     Chip,
     CardActionArea,
     Tooltip,
-    Snackbar
+    Snackbar,
 } from "@mui/material";
 import { UserContext } from "../../Providers/UserContext";
+import HeadingGrid from "./HeadingGrid";
 
 import * as app from "../../firebase";
 import { useEffect, useContext } from "react";
@@ -38,20 +39,7 @@ const ProfileLayout = ({ userData }) => {
                     <ProfileHeader userData={userData} setCopied={setCopied} />
                 </Grid>
             </Container>
-            {
-                copied ?
-                    <Snackbar
-                        open={copied}
-                        autoHideDuration={6000}
-                        onClose={() => setCopied(false)}
-
-                    >
-                        <Alert severity="success" sx={{ width: '100%' }}>
-                            Copied to clipboard!
-                        </Alert>
-                    </Snackbar>
-                    : null
-            }
+            {copied ? <CopyNoti copied={copied} setCopied={setCopied} /> : null}
         </>
     );
 };
@@ -64,13 +52,11 @@ const ProfileHeader = ({ userData, setCopied }) => {
                     <Grid item md={4} xs={12}>
                         <Tooltip
                             placement="top"
-                            title="Click to copy profile id"
+                            title="Click to copy profile ID"
                         >
                             <CardActionArea
                                 onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        userData.uid
-                                    );
+                                    navigator.clipboard.writeText(userData.uid);
                                     setCopied(true);
                                 }}
                             >
@@ -107,50 +93,7 @@ const ProfileHeader = ({ userData, setCopied }) => {
     );
 };
 
-const HeadingGrid = ({ text, bottomText, color, children, noBorder }) => {
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                minHeight: "200px",
-                maxHeight: "200px",
-                alignSelf: "center",
-                justifyContent: "center",
-                borderRight: {
-                    xs: "none",
-                    md: noBorder ? "none" : "1px solid #e0e0e0",
-                },
-                borderBottom: {
-                    md: "none",
-                    xs: noBorder ? "none" : "1px solid #e0e0e0",
-                },
-            }}
-        >
-            <Typography
-                variant="h4"
-                component="h1"
-                sx={{
-                    alignSelf: "center",
-                    padding: "1rem",
-                }}
-            >
-                {text}
 
-                <Typography
-                    variant="h6"
-                    component="span"
-                    sx={{
-                        color: color,
-                        display: "block",
-                    }}
-                >
-                    {bottomText}
-                </Typography>
-            </Typography>
-            {children}
-        </Box>
-    );
-};
 
 //not current user profile
 const NProfile = ({ userId }) => {
@@ -163,7 +106,7 @@ const NProfile = ({ userId }) => {
     useEffect(() => {
         getUser({ userId: userId })
             .then((data) => {
-                setUserData({...data.data, uid: userId});
+                setUserData({ ...data.data, uid: userId });
                 setLoading(false);
             })
             .catch((e) => {
@@ -181,3 +124,22 @@ const NProfile = ({ userId }) => {
     }
     return <ProfileLayout userData={userData} />;
 };
+
+const CopyNoti = ({ copied, setCopied }) => {
+    return (
+        <Snackbar
+            open={copied}
+            autoHideDuration={6000}
+            onClose={() => setCopied(false)}
+        >
+            <Alert
+                severity="success"
+                sx={{
+                    width: "100%",
+                }}
+            >
+                Copied to clipboard!
+            </Alert>
+        </Snackbar>
+    );
+}

@@ -5,7 +5,7 @@ import Prediction from "./Prediction";
 import TabBar from "./TabBar";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-export default function Predictions({ type }) {
+ function Predictions({ type }) {
     const [openError, setOpenError] = React.useState(false);
     const [filterType, setFilterType] = React.useState(0); // 0 = pending, 1 = awaiting,  2 = completed, 3 = all
     const query = app.db
@@ -93,3 +93,6 @@ export default function Predictions({ type }) {
         </Container>
     );
 }
+
+
+export default React.memo(Predictions)

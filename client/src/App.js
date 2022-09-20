@@ -12,7 +12,7 @@ import Profile from "./components/Profile/Profile";
 import ForumPost from "./components/ForumPost";
 import AdminPage from "./components/Admin/AdminPage";
 import { Box } from "@mui/system";
-import {green} from "@mui/material/colors";
+import { green } from "@mui/material/colors";
 import * as app from "./firebase";
 import Forum from "./components/Forum";
 import { CircularProgress } from "@mui/material";
@@ -27,10 +27,10 @@ const darkTheme = createTheme({
         },
         success: {
             main: green[500],
-            dark: green[500]
-        }
+            dark: green[500],
+        },
     },
-    
+
     //make buttons use light theme
 });
 
@@ -47,6 +47,7 @@ const darkTheme = createTheme({
 
 export default function App() {
     const [user, loading] = useAuthState(app.auth);
+    console.log([user,loading])
 
     if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
@@ -59,6 +60,7 @@ export default function App() {
     } else if (user === null) {
         return <Home user={user} />;
     }
+    // else if(user === null && useAuthState.)
 
     return <AppLoggedIn user={user} />;
 }
@@ -81,12 +83,8 @@ const Loading = () => {
 };
 
 const NotFound = () => {
-
-
-
-
-    return <div>Can't find page!</div> 
-}
+    return <div>Can't find page!</div>;
+};
 
 const AppLoggedIn = ({ user }) => {
     const query = app.db.collection("/user").doc(user.uid);
@@ -94,13 +92,23 @@ const AppLoggedIn = ({ user }) => {
 
     if (loading) {
         return <Loading />;
-    }
-    else if(error) {
-        return <div>Error: {error} {"(Please contact an admin)"} </div>;
+    } else if (error) {
+        return (
+            <div>
+                Error: {error} {"(Please contact an admin)"}{" "}
+            </div>
+        );
+    } else if (userData === undefined) {
+        console.log("user undef")
+        return (
+            <Home user={user} creatingUser />
+        )
     }
     return (
         <Box>
-            <UserContext.Provider value={{...user, userData: {...userData}}}>
+            <UserContext.Provider
+                value={{ ...user, userData: { ...userData } }}
+            >
                 <div className="App">
                     <ThemeProvider theme={darkTheme}>
                         <Navbar user={user} isAdmin={userData.admin} />
@@ -118,7 +126,8 @@ const AppLoggedIn = ({ user }) => {
                             <Route
                                 exact
                                 path="/predictions/private"
-                                render={() => <Predictions type="private" />} />
+                                render={() => <Predictions type="private" />}
+                            />
                             <Route
                                 exact
                                 path="/leaderboard"
