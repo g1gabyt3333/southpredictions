@@ -46,12 +46,6 @@ const reducer = (state, action) => {
                 private: !state.private,
             };
 
-        // case "addOptionField":
-
-        //     return {
-        //         ...state,
-        //         optionField: state.optionField + 1,
-        //     };
         case "reset":
             return {
                 prediction: "",
@@ -67,7 +61,7 @@ const reducer = (state, action) => {
 const PredictionPreview = ({ data }) => {
     const padding = { paddingLeft: "5px", paddingRight: "5px" };
     return (
-        <Card sx={{ minWidth: 275, my: "30px"}}>
+        <Card sx={{ minWidth: 275, my: "30px" }}>
             <CardContent>
                 <Typography variant="h5" component="div">
                     {data.prediction}
@@ -121,16 +115,6 @@ export default function AddPrediction() {
         dispatch({ type: "reset" });
     };
 
-    // const inputs = () => {
-    //     let t = 1;
-    //     let comp = [];
-    //     while (t <= state.optionField) {
-    //         comp.push(<TextField label="Option" />);
-    //         t++;
-    //     }
-    //     console.log(comp);
-    //     return comp;
-    // };
     return (
         <>
             <Box

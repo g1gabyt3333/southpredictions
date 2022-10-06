@@ -14,7 +14,7 @@ import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
 import { UserContext } from "../Providers/UserContext";
-const pages = ["Predictions", "Leaderboard"];
+const pages = ["Predictions", "Leaderboard", "About"];
 
 export default class navbar extends Component {
     constructor(props) {

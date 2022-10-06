@@ -17,6 +17,7 @@ import * as app from "./firebase";
 import Forum from "./components/Forum";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "./Providers/UserContext";
+import About from "./components/About";
 
 //create mui dark mode
 const darkTheme = createTheme({
@@ -142,6 +143,7 @@ const AppLoggedIn = ({ user }) => {
                             />
                             <Route exact path="/forum" component={Forum} />
                             <Route exact path="/profile" component={Profile} />
+                            <Route exact path="/about" component={About} />
                             <Route
                                 path={"/profile/:id"}
                                 render={(props) => (
