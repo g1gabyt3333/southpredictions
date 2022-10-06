@@ -14,7 +14,7 @@ import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
 import { UserContext } from "../Providers/UserContext";
-const pages = ["Predictions", "Leaderboard", "About"];
+const pages = ["Predictions", "Leaderboard", "About1"];
 
 export default class navbar extends Component {
     constructor(props) {
@@ -175,7 +175,6 @@ const LoginButton = (props) => {
     const open = Boolean(loginEl);
     const { userData } = useContext(UserContext);
 
-    const [user] = useAuthState(app.auth);
     const handleClick = (event) => {
         setLoginEl(event.currentTarget);
     };
