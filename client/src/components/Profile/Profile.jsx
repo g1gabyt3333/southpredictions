@@ -74,14 +74,14 @@ const ProfileHeader = ({ userData, setCopied }) => {
                         <HeadingGrid
                             text={userData.predictions.wins}
                             bottomText="Correct"
-                            color="lightgreen"
+                            color="green"
                         />
                     </Grid>
                     <Grid item md={4} xs={12}>
                         <HeadingGrid
                             text={userData.predictions.wins}
                             bottomText="Incorrect"
-                            color="salmon"
+                            color="red"
                             noBorder
                         />
                     </Grid>

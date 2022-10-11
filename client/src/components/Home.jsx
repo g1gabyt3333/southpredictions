@@ -45,7 +45,7 @@ const HomeMsg = (props) => {
         return <Typography variant="h6">{props.user.displayName}!</Typography>;
     }
 
-
+    
 
     return (
         <Button

@@ -1,25 +1,25 @@
+import React from "react";
 import Predictions from "./components/Predictions/Predictions";
 import Leaderboard from "./components/Leaderboard";
-import "./App.css";
-import Home from "./components/Home";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import Navbar from "./components/Navbar";
-import { Switch, Route } from "react-router-dom";
-import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentData } from "react-firebase-hooks/firestore";
 import Profile from "./components/Profile/Profile";
+import Home from "./components/Home";
+import Navbar from "./components/Navbar";
 import ForumPost from "./components/ForumPost";
 import AdminPage from "./components/Admin/AdminPage";
-import { Box } from "@mui/system";
-import { green } from "@mui/material/colors";
-import * as app from "./firebase";
 import Forum from "./components/Forum";
-import { CircularProgress } from "@mui/material";
-import { UserContext } from "./Providers/UserContext";
 import About from "./components/About";
-import EightBall from "./components/eightball/EightBall";
+import Tools from "./components/Tools"
+import { UserContext } from "./Providers/UserContext";
+import { Switch, Route } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { CircularProgress } from "@mui/material";
 import { CssBaseline } from "@mui/material";
+import { Box } from "@mui/system";
+import { green, red } from "@mui/material/colors";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import * as app from "./firebase";
+import "./App.css";
 
 //create mui dark mode
 const darkTheme = createTheme({
@@ -32,14 +32,13 @@ const darkTheme = createTheme({
             main: green[500],
             dark: green[500],
         },
-
-        MuiMenuItem: {
-            styleOverrides: {
-                root: {
-                    transiton: "0.5s",
-                },
-            },
+        green: {
+            reg: green[300]
         },
+        red: {
+            reg: red[300]
+        }
+
     },
 
     //make buttons use light theme
@@ -48,6 +47,15 @@ const darkTheme = createTheme({
 const lightTheme = createTheme({
     palette: {
         mode: "light",
+        success: {
+            main: green[500]
+        },
+        green: {
+            reg: green[600]
+        },
+        red: {
+            reg: red[600]
+        }
     },
     components: {
         MuiAppBar: {
@@ -75,7 +83,6 @@ const lightTheme = createTheme({
 export default function App() {
     //handle loading auth
     const [user, loading] = useAuthState(app.auth);
-    console.log([user, loading]);
 
     if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
@@ -165,6 +172,7 @@ const AppLoggedIn = ({ user }) => {
                     changeTheme,
                 }}
             >
+                
                 <div className="App">
                     <ThemeProvider theme={theme ? darkTheme : lightTheme}>
                         <CssBaseline />
@@ -202,8 +210,8 @@ const AppLoggedIn = ({ user }) => {
                             <Route exact path="/about" component={About} />
                             <Route
                                 exact
-                                path="/eightball"
-                                component={EightBall}
+                                path="/tools"
+                                component={Tools}
                             />
                             <Route
                                 path={"/profile/:id"}

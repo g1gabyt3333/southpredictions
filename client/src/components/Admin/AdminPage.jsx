@@ -28,7 +28,7 @@ function AdminPageContent(props) {
     // const [data, load, e2] = useDocumentData(checkAdmin);
 
     const user = useContext(UserContext);
-    // console.log(user)
+    console.log(user)
     const [tabIndex, setTabIndex] = React.useState(0);
 
     if (user.userData.admin === false) {

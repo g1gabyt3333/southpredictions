@@ -11,10 +11,9 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import * as app from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
 import { UserContext } from "../Providers/UserContext";
-const pages = ["Predictions", "Leaderboard", "EightBall", "About"];
+const pages = ["Predictions", "Leaderboard", "About"];
 
 export default class navbar extends Component {
     constructor(props) {
@@ -109,24 +108,7 @@ export default class navbar extends Component {
                                 ))}
                             </Menu>
                         </Box>
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href=""
-                            sx={{
-                                mr: 2,
-                                display: { xs: "flex", md: "none" },
-                                flexGrow: 1,
-                                fontFamily: "monospace",
-                                fontWeight: 700,
-                                letterSpacing: ".1rem",
-                                fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                                textDecoration: "none",
-                            }}
-                        >
-                            South Predictions
-                        </Typography>
+
                         <Box
                             sx={{
                                 flexGrow: 1,
@@ -195,7 +177,6 @@ const LoginButton = (props) => {
                     onClick={handleClick}
                     sx={{
                         my: 2,
-                        display: "block",
                         borderRadius: "4px",
                     }}
                 >
@@ -218,11 +199,7 @@ const LoginButton = (props) => {
                     >
                         Profile
                     </MenuItem>
-                    <MenuItem
-                        onClick={changeTheme}
-                    >
-                        Toggle Theme
-                    </MenuItem>
+                    <MenuItem onClick={changeTheme}>Toggle Theme</MenuItem>
                     {userData.admin ? (
                         <MenuItem
                             onClick={handleClose}
@@ -234,14 +211,24 @@ const LoginButton = (props) => {
                         </MenuItem>
                     ) : null}
                     {userData.private ? (
-                        <MenuItem
-                            onClick={handleClose}
-                            component={Link}
-                            id="private"
-                            to={`/predictions/private`}
-                        >
-                            Private Predictions
-                        </MenuItem>
+                        <>
+                            <MenuItem
+                                onClick={handleClose}
+                                component={Link}
+                                id="private"
+                                to="/predictions/private"
+                            >
+                                Private Predictions
+                            </MenuItem>
+                            <MenuItem
+                                onClick={handleClose}
+                                component={Link}
+                                id="private2"
+                                to="/tools"
+                            >
+                                Tools
+                            </MenuItem>
+                        </>
                     ) : null}
 
                     <MenuItem onClick={handleClose} id="logout">

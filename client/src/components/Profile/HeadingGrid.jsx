@@ -35,7 +35,7 @@ const HeadingGrid = ({ text, bottomText, color, children, noBorder }) => {
                     variant="h6"
                     component="span"
                     sx={{
-                        color: color,
+                        color: `${color}.reg`,
                         display: "block",
                     }}
                 >
