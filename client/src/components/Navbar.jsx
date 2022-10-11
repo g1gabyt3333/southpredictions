@@ -14,7 +14,7 @@ import * as app from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useContext } from "react";
 import { UserContext } from "../Providers/UserContext";
-const pages = ["Predictions", "Leaderboard", "About1"];
+const pages = ["Predictions", "Leaderboard", "EightBall", "About"];
 
 export default class navbar extends Component {
     constructor(props) {
@@ -74,7 +74,6 @@ export default class navbar extends Component {
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 onClick={this.handleOpenNavMenu}
-                                color="inherit"
                             >
                                 <MenuIcon />
                             </IconButton>
@@ -122,7 +121,6 @@ export default class navbar extends Component {
                                 fontFamily: "monospace",
                                 fontWeight: 700,
                                 letterSpacing: ".1rem",
-                                color: "inherit",
                                 fontSize: { xs: "1.25rem", sm: "1.5rem" },
                                 textDecoration: "none",
                             }}
@@ -136,19 +134,24 @@ export default class navbar extends Component {
                             }}
                         >
                             {pages.map((page) => (
-                                <Button
+                                <MenuItem
                                     key={page}
                                     onClick={this.handleCloseNavMenu}
                                     to={`/${page.toLowerCase()}`}
                                     component={Link}
                                     sx={{
-                                        my: 2,
-                                        color: "white",
-                                        display: "block",
+                                        borderRadius: "4px",
                                     }}
                                 >
-                                    {page}
-                                </Button>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "500",
+                                            textTransform: "uppercase",
+                                        }}
+                                    >
+                                        {page}
+                                    </Typography>
+                                </MenuItem>
                             ))}
                         </Box>
                         <Box
@@ -173,7 +176,7 @@ export default class navbar extends Component {
 const LoginButton = (props) => {
     const [loginEl, setLoginEl] = React.useState(null);
     const open = Boolean(loginEl);
-    const { userData } = useContext(UserContext);
+    const { userData, changeTheme } = useContext(UserContext);
 
     const handleClick = (event) => {
         setLoginEl(event.currentTarget);
@@ -188,16 +191,16 @@ const LoginButton = (props) => {
     if (props.user) {
         return (
             <>
-                <Button
+                <MenuItem
                     onClick={handleClick}
                     sx={{
                         my: 2,
-                        color: "white",
                         display: "block",
+                        borderRadius: "4px",
                     }}
                 >
-                    {props.user.displayName}
-                </Button>
+                    <Typography>{props.user.displayName}</Typography>
+                </MenuItem>
                 <Menu
                     id="basic-menu"
                     anchorEl={loginEl}
@@ -214,6 +217,11 @@ const LoginButton = (props) => {
                         to={`/profile/`}
                     >
                         Profile
+                    </MenuItem>
+                    <MenuItem
+                        onClick={changeTheme}
+                    >
+                        Toggle Theme
                     </MenuItem>
                     {userData.admin ? (
                         <MenuItem
@@ -232,10 +240,10 @@ const LoginButton = (props) => {
                             id="private"
                             to={`/predictions/private`}
                         >
-                        Private Predictions
+                            Private Predictions
                         </MenuItem>
                     ) : null}
-                    
+
                     <MenuItem onClick={handleClose} id="logout">
                         Logout
                     </MenuItem>

@@ -18,21 +18,47 @@ import Forum from "./components/Forum";
 import { CircularProgress } from "@mui/material";
 import { UserContext } from "./Providers/UserContext";
 import About from "./components/About";
+import EightBall from "./components/eightball/EightBall";
+import { CssBaseline } from "@mui/material";
 
 //create mui dark mode
 const darkTheme = createTheme({
     palette: {
         mode: "dark",
         background: {
-            default: "#333333",
+            default: "#222222",
         },
         success: {
             main: green[500],
             dark: green[500],
         },
+
+        MuiMenuItem: {
+            styleOverrides: {
+                root: {
+                    transiton: "0.5s",
+                },
+            },
+        },
     },
 
     //make buttons use light theme
+});
+
+const lightTheme = createTheme({
+    palette: {
+        mode: "light",
+    },
+    components: {
+        MuiAppBar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: "#fff",
+                    color: "#000",
+                },
+            },
+        },
+    },
 });
 
 // const lightTheme = createTheme({
@@ -47,8 +73,9 @@ const darkTheme = createTheme({
 // );
 
 export default function App() {
+    //handle loading auth
     const [user, loading] = useAuthState(app.auth);
-    console.log([user,loading])
+    console.log([user, loading]);
 
     if (user && user.email.split("@")[1] !== "wwprsd.org") {
         setTimeout(() => {
@@ -57,7 +84,11 @@ export default function App() {
         return <div>WW-P students only! You will be signed out shortly!</div>;
     }
     if (loading) {
-        return <Loading />;
+        return (
+            <ThemeProvider theme={darkTheme}>
+                <Loading />
+            </ThemeProvider>
+        );
     } else if (user === null) {
         return <Home user={user} />;
     }
@@ -77,6 +108,7 @@ const Loading = () => {
                 transform: "translate(-50%, -50%)",
             }}
         >
+            <CssBaseline />
             <CircularProgress />
             Loading...
         </div>
@@ -90,9 +122,29 @@ const NotFound = () => {
 const AppLoggedIn = ({ user }) => {
     const query = app.db.collection("/user").doc(user.uid);
     const [userData, loading, error] = useDocumentData(query);
+    const [theme, setTheme] = React.useState(false);
+
+    React.useEffect(() => {
+        const t = localStorage.getItem("theme");
+
+        if (!t) {
+            localStorage.setItem("theme", JSON.stringify(theme));
+        } else {
+            setTheme(JSON.parse(t));
+        }
+    }, []);
+
+    const changeTheme = () => {
+        localStorage.setItem("theme", !theme);
+        setTheme(!theme);
+    };
 
     if (loading) {
-        return <Loading />;
+        return (
+            <ThemeProvider theme={darkTheme}>
+                <Loading />
+            </ThemeProvider>
+        );
     } else if (error) {
         return (
             <div>
@@ -100,18 +152,22 @@ const AppLoggedIn = ({ user }) => {
             </div>
         );
     } else if (userData === undefined) {
-        console.log("user undef")
-        return (
-            <Home user={user} creatingUser />
-        )
+        console.log("user undef");
+        return <Home user={user} creatingUser />;
     }
     return (
         <Box>
             <UserContext.Provider
-                value={{ ...user, userData: { ...userData } }}
+                value={{
+                    ...user,
+                    userData: { ...userData },
+                    theme,
+                    changeTheme,
+                }}
             >
                 <div className="App">
-                    <ThemeProvider theme={darkTheme}>
+                    <ThemeProvider theme={theme ? darkTheme : lightTheme}>
+                        <CssBaseline />
                         <Navbar user={user} isAdmin={userData.admin} />
                         <Switch>
                             <Route
@@ -144,6 +200,11 @@ const AppLoggedIn = ({ user }) => {
                             <Route exact path="/forum" component={Forum} />
                             <Route exact path="/profile" component={Profile} />
                             <Route exact path="/about" component={About} />
+                            <Route
+                                exact
+                                path="/eightball"
+                                component={EightBall}
+                            />
                             <Route
                                 path={"/profile/:id"}
                                 render={(props) => (
