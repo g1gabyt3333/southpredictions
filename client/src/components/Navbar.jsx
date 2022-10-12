@@ -211,24 +211,26 @@ const LoginButton = (props) => {
                         </MenuItem>
                     ) : null}
                     {userData.private ? (
-                        <>
+                        [
                             <MenuItem
                                 onClick={handleClose}
                                 component={Link}
                                 id="private"
                                 to="/predictions/private"
+                                key={0}
                             >
                                 Private Predictions
-                            </MenuItem>
+                            </MenuItem>,    
                             <MenuItem
                                 onClick={handleClose}
                                 component={Link}
                                 id="private2"
                                 to="/tools"
+                                key={1}
                             >
                                 Tools
                             </MenuItem>
-                        </>
+                        ]
                     ) : null}
 
                     <MenuItem onClick={handleClose} id="logout">

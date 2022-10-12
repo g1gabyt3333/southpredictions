@@ -120,6 +120,8 @@ const NProfile = ({ userId }) => {
     if (error) {
         return <Alert severity="error">User not found</Alert>;
     }
+
+    console.log(userData)
     return <ProfileLayout userData={userData} />;
 };
 

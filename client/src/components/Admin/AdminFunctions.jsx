@@ -27,11 +27,11 @@ import { Button } from "@mui/material";
 
 export default function AdminFunctions() {
     const addNewPrediction = async () => {
-        await app.db.collection("/privatePredictions").add({
+        await app.db.collection("/predictions").add({
             dateCreated: serverTimestamp(),
             isCompleted: false,
             options: ["Yes", "No"],
-            prediction: "Will Rajat Gupta hit diamond?",
+            prediction: "Will I get an a on my next test?",
             results: {
                 Yes: 0,
                 No: 0,
@@ -52,25 +52,22 @@ export default function AdminFunctions() {
         //     console.log(data);
         // }
 
-        // const uq = app.db.collection("/user");
+        const uq = app.db.collection("/user");
         // let arr = [];
-        // uq.get().then((data) => {
-        //     data.docs.forEach((doc) => {
-        //         const query = app.db.collection("/user").doc(doc.id);
+        uq.get().then((data) => {
+            data.docs.forEach((doc) => {
+                const query = app.db.collection("/user").doc(doc.id);
 
-        //         query.update({
-        //             predictions: {
-        //                 wins: 0,
-        //                 losses: 0
-        //             }
-        //         })
-        //         .then(
-        //             (data) => {
-        //                 console.log(data)
-        //             }
-        //         )
-        //     });
-        // });
+                query.update({
+                    privateProfile: false
+                })
+                .then(
+                    (data) => {
+                        console.log(data)
+                    }
+                )
+            });
+        });
     };
     // const [state, dispatch] = React.useReducer(reducer, {});
     return (
