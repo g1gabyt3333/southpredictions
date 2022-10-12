@@ -24,9 +24,10 @@ exports.changeTallyPrivate = functions.firestore
     .onCreate(async function (snap, context) {
         const data = snap.data();
         const predictionId = context.params.predictionId;
-        
 
-        const predictionRef = db.collection("privatePredictions").doc(predictionId);
+        const predictionRef = db
+            .collection("privatePredictions")
+            .doc(predictionId);
         const prediction = await predictionRef.get();
         let predictionData = prediction.data();
         predictionData.results[data.vote]++;
@@ -46,11 +47,12 @@ exports.createUser = functions.auth.user().onCreate(async function (user) {
             uid: user.uid,
             admin: false,
             private: false,
+            privateProfile: false,
             predictions: {
                 wins: 0,
                 losses: 0,
             },
-            createdAccount: new Date()
+            createdAccount: new Date(),
         });
     }
 });
@@ -64,7 +66,10 @@ exports.getLeaderboard = functions.https.onCall(async function (data, context) {
         !context.auth ||
         context.auth.token.email.split("@")[1] !== "wwprsd.org"
     ) {
-        throw new functions.https.HttpsError("permission-denied", "You do not have access to this resource")
+        throw new functions.https.HttpsError(
+            "permission-denied",
+            "You do not have access to this resource"
+        );
     }
     const db = admin.firestore();
     const users = db
@@ -121,6 +126,8 @@ exports.processPrediction = functions.firestore
                             .set({
                                 vote: doc.data().vote,
                                 isCorrect: true,
+                                prediction: change.after.data().prediction,
+                                date: new Date(),
                             });
                     });
                 } else {
@@ -135,6 +142,8 @@ exports.processPrediction = functions.firestore
                             .set({
                                 vote: doc.data().vote,
                                 isCorrect: false,
+                                prediction: change.after.data().prediction,
+                                date: new Date(),
                             });
                     });
                 }
@@ -145,27 +154,47 @@ exports.processPrediction = functions.firestore
     });
 
 exports.getUser = functions.https.onCall(async function (data, context) {
-
-    if(context.auth.token.email.split("@")[1] !== "wwprsd.org")  {
-        throw new functions.https.HttpsError("permission-denied", "You do not have access to this resource")
+    if (context.auth.token.email.split("@")[1] !== "wwprsd.org") {
+        throw new functions.https.HttpsError(
+            "permission-denied",
+            "You do not have access to this resource"
+        );
     }
-    const {userId} = data;
+    const { userId } = data;
 
     const userData = (await db.collection("/user").doc(userId).get()).data();
 
-    if(userData === undefined) {
-        throw new functions.https.HttpsError("not-found", "The user was not found in the database;")
+    let predictions;
+
+    if (userData.privateProfile === false) {
+        predictions = (
+            await db
+                .collection("/user")
+                .doc(userId)
+                .collection("/votes")
+                .orderBy("date", "asc")
+                .limit(10)
+                .get()
+        ).docs.map((doc) => doc.data());
+    } else {
+        predictions = "private";
     }
 
+    if (userData === undefined) {
+        throw new functions.https.HttpsError(
+            "not-found",
+            "The user was not found in the database;"
+        );
+    }
 
     return {
         admin: userData.admin,
         email: userData.email,
         name: userData.name,
-        predictions: userData.predictions
-    }
-    
-})
+        predictions: userData.predictions,
+        predictionsArray: predictions,
+    };
+});
 
 exports.docTemplate = functions.https.onCall(async function (data, context) {
     let data2 = await db.collection("/predictions").get();
