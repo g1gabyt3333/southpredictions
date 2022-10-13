@@ -192,6 +192,7 @@ exports.getUser = functions.https.onCall(async function (data, context) {
         email: userData.email,
         name: userData.name,
         predictions: userData.predictions,
+        privateProfile: userData.privateProfile,
         predictionsArray: predictions,
     };
 });
