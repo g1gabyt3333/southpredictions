@@ -111,9 +111,9 @@ exports.processPrediction = functions.firestore
             await db.collection("/predictions/" + predictionId + "/votes").get()
         ).docs.map((doc) => {
             const q2 = db.collection("/user").doc(doc.id);
+            functions.logger.log("updating data for: ", doc.id);
 
             q2.get().then((data) => {
-                functions.logger.log(data);
                 if (doc.data().vote === choice) {
                     q2.update({
                         predictions: {

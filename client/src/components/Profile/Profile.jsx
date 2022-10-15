@@ -9,10 +9,11 @@ import {
     CardActionArea,
     Tooltip,
     Snackbar,
+    Divider,
 } from "@mui/material";
 import { UserContext } from "../../Providers/UserContext";
 import HeadingGrid from "./HeadingGrid";
-
+import RecentPredictions from "./RecentPredictions";
 import * as app from "../../firebase";
 import { useEffect, useContext } from "react";
 
@@ -35,6 +36,18 @@ const ProfileLayout = ({ userData }) => {
             <Container maxWidth="xl" sx={{ marginTop: "10vh" }}>
                 <Grid container>
                     <ProfileHeader userData={userData} setCopied={setCopied} />
+                    <Grid item xs={12}>
+                        <Divider variant="middle" sx={{ my: "30px" }}>
+                            Recent Predictions
+                        </Divider>
+                    </Grid>
+                    {userData.privateProfile ? (
+                        <div> Profile is private </div>
+                    ) : (
+                        <RecentPredictions
+                            predictions={userData.predictionsArray}
+                        />
+                    )}
                 </Grid>
             </Container>
             {copied ? <CopyNoti copied={copied} setCopied={setCopied} /> : null}
@@ -91,8 +104,6 @@ const ProfileHeader = ({ userData, setCopied }) => {
     );
 };
 
-
-
 //not current user profile
 const NProfile = ({ userId }) => {
     const [userData, setUserData] = React.useState({});
@@ -121,7 +132,7 @@ const NProfile = ({ userId }) => {
         return <Alert severity="error">User not found</Alert>;
     }
 
-    console.log(userData)
+    console.log(userData);
     return <ProfileLayout userData={userData} />;
 };
 
@@ -142,4 +153,4 @@ const CopyNoti = ({ copied, setCopied }) => {
             </Alert>
         </Snackbar>
     );
-}
+};
