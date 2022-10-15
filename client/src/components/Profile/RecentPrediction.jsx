@@ -9,11 +9,12 @@ import {
     Tooltip,
 } from "@mui/material";
 
-export default function RecentPrediction({ data }) {
-    
+export default function RecentPrediction({ data, user }) {
+    const date = user ? data.date.toDate() : new Date(data.date._seconds * 1000 + data.date._nanoseconds / 1000000);
+
     return (
         <Grid item xs={12}>
-            <Tooltip title={new Date(data.date.seconds * 1000).toString()} placement="top">
+            <Tooltip title={date.toString()} placement="top">
                 <Card
                     sx={{
                         minWidth: 275,

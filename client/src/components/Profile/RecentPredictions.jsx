@@ -8,6 +8,7 @@ export default function RecentPredictions({ predictions }) {
     const [pred, setPred] = useState(predictions);
     const [loading, setLoading] = useState(true);
     const { userData } = useContext(UserContext);
+    const [isUser, setIsUser] = useState(false);
 
     if (pred === undefined) {
         app.db
@@ -21,21 +22,21 @@ export default function RecentPredictions({ predictions }) {
             .then((docs) => {
                 setPred(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
                 setLoading(false);
+                setIsUser(true);
             });
     }
 
     if (loading) {
-        if(pred !== undefined) {
-            setLoading(false)
+        if (pred !== undefined) {
+            setLoading(false);
         }
-
 
         return <div>Loading...</div>;
     }
     return (
         <>
             {pred.map((doc) => (
-                <RecentPrediction key={doc.id} data={doc} />
+                <RecentPrediction key={doc.id} data={doc} user={isUser} />
             ))}
         </>
     );
